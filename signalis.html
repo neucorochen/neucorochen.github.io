@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=DynaPuff:wght@600;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=DynaPuff:wght@600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -25,11 +25,7 @@
       --shadow-block: 4px 5px 0px rgba(77, 96, 58, 0.25);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg-canvas);
@@ -55,7 +51,6 @@
       margin-bottom: 20px;
     }
 
-    /* Верхние кнопки */
     .window-tabs {
       display: flex;
       justify-content: flex-end;
@@ -74,15 +69,8 @@
       border-radius: 20px;
       border: var(--stroke);
       box-shadow: 2px 3px 0px rgba(77, 96, 58, 0.25);
-      transition: all 0.15s ease;
     }
 
-    .tab-btn:hover {
-      background: var(--card-yellow);
-      transform: translateY(-2px);
-    }
-
-    /* Адресная строка */
     .browser-bar {
       background: var(--win-bar);
       border-top: var(--stroke);
@@ -93,10 +81,7 @@
       gap: 12px;
     }
 
-    .browser-controls {
-      display: flex;
-      gap: 6px;
-    }
+    .browser-controls { display: flex; gap: 6px; }
 
     .nav-arrow {
       background: var(--card-white);
@@ -132,12 +117,8 @@
       color: #556e3b;
     }
 
-    .heart-icon {
-      color: var(--accent-coral);
-      font-size: 1.1rem;
-    }
+    .heart-icon { color: var(--accent-coral); font-size: 1.1rem; }
 
-    /* Баннер игры */
     .window-banner {
       background: #e2f0c7;
       padding: 24px 28px;
@@ -184,123 +165,21 @@
       min-width: 110px;
     }
 
-    .score-stars {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--accent-coral);
-    }
-
+    .score-stars { display: block; font-size: 0.8rem; color: var(--accent-coral); }
     .score-val {
       font-family: 'DynaPuff', cursive;
       font-size: 2.2rem;
       color: var(--accent-coral);
       line-height: 1;
     }
+    .score-max { font-size: 0.85rem; font-weight: 800; color: var(--win-border); }
 
-    .score-max {
-      font-size: 0.85rem;
-      font-weight: 800;
-      color: var(--win-border);
-    }
-
-    /* Тело статьи */
     .review-body-wrap {
       padding: 26px 28px;
       background: var(--card-cream);
       border-bottom: var(--stroke);
     }
 
-    /* ДИАГРАММА С КАПСУЛАМИ */
-    .chart-section {
-      background: var(--card-white);
-      border: var(--stroke);
-      border-radius: 24px;
-      padding: 24px 20px;
-      margin-bottom: 26px;
-      box-shadow: var(--shadow-block);
-    }
-
-    .chart-header {
-      text-align: center;
-      margin-bottom: 22px;
-    }
-
-    .chart-header h3 {
-      font-family: 'Comfortaa', cursive;
-      font-size: 1.35rem;
-      color: #3b4d24;
-      margin-bottom: 4px;
-    }
-
-    .chart-sub {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 700;
-    }
-
-    .capsules-container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 20px;
-      padding: 8px 0;
-    }
-
-    .capsule-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .capsule-track {
-      width: 66px;
-      height: 195px;
-      background: #fbf9ef;
-      border: 3.5px solid #ffffff;
-      outline: 2.5px solid var(--win-border);
-      border-radius: 50px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      box-shadow: 2px 4px 0px rgba(77, 96, 58, 0.15);
-    }
-
-    .capsule-fill {
-      width: 100%;
-      height: var(--val, 50%);
-      border-radius: 0 0 46px 46px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      padding-bottom: 12px;
-      box-sizing: border-box;
-      transition: height 0.6s ease-out;
-    }
-
-    .fill-pink { background-color: #ef76a7; }
-    .fill-lime { background-color: #afe065; }
-    .fill-softpink { background-color: #f396c3; }
-    .fill-cyan { background-color: #6bcacc; }
-
-    .capsule-score {
-      font-family: 'DynaPuff', cursive;
-      font-size: 0.95rem;
-      color: #ffffff;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.35);
-      font-weight: 700;
-    }
-
-    .capsule-label {
-      font-family: 'Comfortaa', cursive;
-      font-size: 0.9rem;
-      font-weight: 800;
-      color: var(--text-dark);
-    }
-
-    /* Информация и текст */
     .game-meta-bar {
       display: flex;
       flex-wrap: wrap;
@@ -311,6 +190,22 @@
       padding: 10px 16px;
       font-size: 0.9rem;
       margin-bottom: 22px;
+    }
+
+    .cover-card {
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-block);
+      margin-bottom: 24px;
+    }
+
+    .cover-card img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
     }
 
     .article-lead {
@@ -335,7 +230,6 @@
       margin-bottom: 18px;
     }
 
-    /* Скриншоты */
     .cute-screenshot-card {
       background: var(--card-white);
       border: var(--stroke);
@@ -358,17 +252,6 @@
       font-weight: 700;
       color: #556642;
       background: #fbfbee;
-    }
-
-    .screenshots-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin: 24px 0;
-    }
-
-    .screenshots-row .cute-screenshot-card {
-      margin: 0;
     }
 
     /* Плюсы и минусы */
@@ -431,6 +314,80 @@
       font-weight: bold;
     }
 
+    /* ДИАГРАММА СО СТОЛБИКАМИ (СТРОГО ПОД ПЛЮСАМИ И МИНУСАМИ) */
+    .chart-section {
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 24px;
+      padding: 24px 20px;
+      margin: 30px 0 24px;
+      box-shadow: var(--shadow-block);
+    }
+
+    .chart-header { text-align: center; margin-bottom: 22px; }
+    .chart-header h3 {
+      font-family: 'Comfortaa', cursive;
+      font-size: 1.35rem;
+      color: #3b4d24;
+      margin-bottom: 4px;
+    }
+    .chart-sub { font-size: 0.85rem; color: var(--text-muted); font-weight: 700; }
+
+    .capsules-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 20px;
+      padding: 8px 0;
+    }
+
+    .capsule-col { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+    .capsule-track {
+      width: 66px;
+      height: 195px;
+      background: #fbf9ef;
+      border: 3.5px solid #ffffff;
+      outline: 2.5px solid var(--win-border);
+      border-radius: 50px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      box-shadow: 2px 4px 0px rgba(77, 96, 58, 0.15);
+    }
+
+    .capsule-fill {
+      width: 100%;
+      border-radius: 0 0 46px 46px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 12px;
+      box-sizing: border-box;
+    }
+
+    .fill-pink { background-color: #ef76a7; }
+    .fill-lime { background-color: #afe065; }
+    .fill-softpink { background-color: #f396c3; }
+    .fill-cyan { background-color: #6bcacc; }
+
+    .capsule-score {
+      font-family: 'DynaPuff', cursive;
+      font-size: 0.95rem;
+      color: #ffffff;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.35);
+      font-weight: 700;
+    }
+
+    .capsule-label {
+      font-family: 'Comfortaa', cursive;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
     .cute-final-verdict {
       background: var(--card-yellow);
       border: var(--stroke);
@@ -446,11 +403,7 @@
       font-size: 1.15rem;
     }
 
-    .cute-final-verdict p {
-      color: #4b583b;
-      font-size: 0.98rem;
-      line-height: 1.6;
-    }
+    .cute-final-verdict p { color: #4b583b; font-size: 0.98rem; line-height: 1.6; }
 
     .window-footer {
       text-align: center;
@@ -463,11 +416,10 @@
 
     @media (max-width: 680px) {
       .review-body-wrap { padding: 18px 14px; }
-      .screenshots-row, .verdict-grid { grid-template-columns: 1fr; }
+      .verdict-grid { grid-template-columns: 1fr; }
       .window-banner { flex-direction: column; align-items: flex-start; gap: 14px; }
       .capsules-container { gap: 10px; }
       .capsule-track { width: 52px; height: 160px; }
-      .capsule-label { font-size: 0.78rem; }
     }
   </style>
 </head>
@@ -475,27 +427,23 @@
 
   <div class="browser-window">
     
-    <!-- Навигация -->
     <nav class="window-tabs">
       <a href="index.html" class="tab-btn">← На главную</a>
-      <a href="index.html#reviews" class="tab-btn">🎮 Другие обзоры</a>
     </nav>
 
-    <!-- Адресная строка -->
     <div class="browser-bar">
       <div class="browser-controls">
         <a href="index.html" class="nav-arrow">⇦</a>
         <div class="nav-arrow">⇨</div>
         <div class="nav-arrow">↻</div>
       </div>
-
       <div class="address-input">
-        <span class="url-text">my.gamelog.cafe/reviews/signalis.html</span>
+        <span class="url-text">my.gamelog.cafe/reviews/signalis</span>
         <span class="heart-icon">♥</span>
       </div>
     </div>
 
-    <!-- Шапка обзора -->
+    <!-- 1. Название, жанр и общая оценка -->
     <header class="window-banner">
       <div class="banner-text">
         <div class="review-status-pill">SURVIVAL HORROR • 2022</div>
@@ -510,10 +458,57 @@
       </div>
     </header>
 
-    <!-- ТЕЛО СТАТЬИ -->
     <main class="review-body-wrap">
       
-      <!-- ТАБЛИЧКА ДИАГРАММЫ В САМОМ ВЕРХУ -->
+      <!-- Мета-информация -->
+      <div class="game-meta-bar">
+        <span><strong>Разработчик:</strong> rose-engine</span>
+        <span><strong>Время:</strong> ~9–11 часов</span>
+        <span><strong>Сложность:</strong> Выше среднего</span>
+      </div>
+
+      <!-- Обложка игры -->
+      <div class="cover-card">
+        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80" alt="Signalis">
+      </div>
+
+      <!-- Текст статьи и скриншоты -->
+      <p class="article-lead">
+        Signalis — редкий пример авторского проекта, который бережно переносит принципы классического survival horror эпохи первой PlayStation, не превращаясь при этом в слепое копирование устаревших механик.
+      </p>
+
+      <h2 class="sub-heading">Холод космоса и радиопомехи</h2>
+      <p class="article-text">
+        Сюжет стартует с аварийной посадки на заснеженной планете. Игрок берет под управление реплику Эльстер — андроида, очнувшегося посреди опустевшего комплекса Sierpinski. Вокруг только помехи в радиоэфире и существа, бывшие когда-то персоналом.
+      </p>
+
+      <figure class="cute-screenshot-card">
+        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" alt="Скриншот">
+        <figcaption>★ Интерфейс стилизован под старые мониторы и ЭЛТ-экраны.</figcaption>
+      </figure>
+
+      <!-- 2. Блок: Плюсы и минусы -->
+      <div class="verdict-grid">
+        <div class="pros-cons-card pros">
+          <div class="card-tag-head green-tag">Плюсы ! 💚</div>
+          <ul>
+            <li>Потрясающий арт-дизайн и густая атмосфера</li>
+            <li>Отличный эмбиент и звуковые эффекты</li>
+            <li>Умные головоломки без банальных подсказок</li>
+            <li>Глубокий сюжет с несколькими финалами</li>
+          </ul>
+        </div>
+
+        <div class="pros-cons-card cons">
+          <div class="card-tag-head red-tag">Минусы ! 🍎</div>
+          <ul>
+            <li>Лимит в 6 ячеек инвентаря заставляет делать лишние круги</li>
+            <li>Иногда неловкое прицеливание в узких коридорах</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3. ДИАГРАММА: СТРОГО ПОД ПЛЮСАМИ И МИНУСАМИ -->
       <section class="chart-section">
         <div class="chart-header">
           <h3>Параметры игры ★ Breakdown</h3>
@@ -521,36 +516,40 @@
         </div>
 
         <div class="capsules-container">
+          <!-- Дизайн: 9.5 (95% высоты) -->
           <div class="capsule-col">
             <div class="capsule-track">
-              <div class="capsule-fill fill-pink" style="--val: 95%;">
+              <div class="capsule-fill fill-pink" style="height: 95%;">
                 <span class="capsule-score">9.5</span>
               </div>
             </div>
             <span class="capsule-label">Дизайн</span>
           </div>
 
+          <!-- Сюжет: 9.0 (90% высоты) -->
           <div class="capsule-col">
             <div class="capsule-track">
-              <div class="capsule-fill fill-lime" style="--val: 90%;">
+              <div class="capsule-fill fill-lime" style="height: 90%;">
                 <span class="capsule-score">9.0</span>
               </div>
             </div>
             <span class="capsule-label">Сюжет</span>
           </div>
 
+          <!-- Механика: 8.0 (80% высоты) -->
           <div class="capsule-col">
             <div class="capsule-track">
-              <div class="capsule-fill fill-softpink" style="--val: 80%;">
+              <div class="capsule-fill fill-softpink" style="height: 80%;">
                 <span class="capsule-score">8.0</span>
               </div>
             </div>
             <span class="capsule-label">Механика</span>
           </div>
 
+          <!-- Звук: 10 (100% высоты) -->
           <div class="capsule-col">
             <div class="capsule-track">
-              <div class="capsule-fill fill-cyan" style="--val: 100%;">
+              <div class="capsule-fill fill-cyan" style="height: 100%;">
                 <span class="capsule-score">10</span>
               </div>
             </div>
@@ -559,68 +558,7 @@
         </div>
       </section>
 
-      <!-- Мета-информация -->
-      <div class="game-meta-bar">
-        <span><strong>Разработчик:</strong> rose-engine</span>
-        <span><strong>Время:</strong> ~9–11 часов</span>
-        <span><strong>Сложность:</strong> Выше среднего</span>
-      </div>
-
-      <!-- Вводный текст -->
-      <p class="article-lead">
-        Signalis — редкий пример авторского проекта, который бережно переносит принципы классического survival horror эпохи первой PlayStation, не превращаясь при этом в слепое копирование устаревших механик.
-      </p>
-
-      <!-- Скриншот -->
-      <figure class="cute-screenshot-card">
-        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80" alt="Интерьеры базы">
-        <figcaption>★ Интерьеры базы Sierpinski сочетают брутализм, холод и строгие геометрические линии.</figcaption>
-      </figure>
-
-      <h2 class="sub-heading">Холод космоса и радиопомехи</h2>
-      <p class="article-text">
-        Сюжет стартует с аварийной посадки на заснеженной планете. Игрок берет под управление реплику Эльстер — андроида, очнувшегося посреди опустевшего горнодобывающего комплекса. Вокруг только искаженные радиосигналы, покинутые посты и существа, бывшие когда-то членами персонала.
-      </p>
-
-      <h2 class="sub-heading">Геймплей и 6 ячеек инвентаря</h2>
-      <p class="article-text">
-        Основа игрового процесса — жесткое ограничение карманов: с собой можно нести только 6 предметов (включая фонарик и оружие). Каждая пуля на счету, а поверженные противники через некоторое время оживают, если их тела не сжечь термическими зарядами.
-      </p>
-
-      <!-- Сетка скриншотов -->
-      <div class="screenshots-row">
-        <figure class="cute-screenshot-card">
-          <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" alt="Интерфейс">
-          <figcaption>Интерфейс стилизован под ретро-мониторы.</figcaption>
-        </figure>
-        <figure class="cute-screenshot-card">
-          <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80" alt="Боевая сцена">
-          <figcaption>Стычки с врагами требуют аккуратности.</figcaption>
-        </figure>
-      </div>
-
-      <!-- Плюсы и минусы -->
-      <div class="verdict-grid">
-        <div class="pros-cons-card pros">
-          <div class="card-tag-head green-tag">Плюсы ! 💚</div>
-          <ul>
-            <li>Потрясающий арт-дизайн и густая атмосфера</li>
-            <li>Отличный эмбиент и звуковые эффекты</li>
-            <li>Умные головоломки без чрезмерных подсказок</li>
-            <li>Глубокий сюжет с несколькими финалами</li>
-          </ul>
-        </div>
-
-        <div class="pros-cons-card cons">
-          <div class="card-tag-head red-tag">Минусы ! 🍎</div>
-          <ul>
-            <li>Лимит в 6 ячеек часто заставляет делать лишние круги</li>
-            <li>Иногда неловкое прицеливание в узких коридорах</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Итог -->
+      <!-- 4. Итог -->
       <div class="cute-final-verdict">
         <h3>Вердикт автора:</h3>
         <p>Настоящая жемчужина для всех любителей классических Resident Evil и Silent Hill. Если вас не пугает мрачный научно-фантастический сюжет и постоянный дефицит патронов — пропускать категорически не стоит.</p>
