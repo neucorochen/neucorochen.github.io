@@ -24,11 +24,7 @@
       --shadow: 4px 5px 0px rgba(90, 110, 67, 0.22);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg-canvas);
@@ -91,10 +87,7 @@
       gap: 12px;
     }
 
-    .browser-controls {
-      display: flex;
-      gap: 6px;
-    }
+    .browser-controls { display: flex; gap: 6px; }
 
     .nav-arrow {
       background: var(--card-white);
@@ -129,10 +122,7 @@
       color: #556e3b;
     }
 
-    .heart-icon {
-      color: var(--accent-coral);
-      font-size: 1.1rem;
-    }
+    .heart-icon { color: var(--accent-coral); font-size: 1.1rem; }
 
     .window-banner {
       background: #e2f0c7;
@@ -204,10 +194,6 @@
       color: var(--text-main);
     }
 
-    .box-icon {
-      font-size: 1.3rem;
-    }
-
     .box-body {
       padding: 20px;
       display: flex;
@@ -215,7 +201,6 @@
       gap: 18px;
     }
 
-    /* Карточки обзоров */
     .review-card {
       background: var(--card-white);
       border: var(--stroke);
@@ -260,9 +245,7 @@
       box-shadow: 1px 2px 0px rgba(90, 110, 67, 0.25);
     }
 
-    .card-info {
-      padding: 16px 18px;
-    }
+    .card-info { padding: 16px 18px; }
 
     .card-tag {
       display: inline-block;
@@ -312,7 +295,6 @@
       box-shadow: 1px 1px 0px rgba(90, 110, 67, 0.25);
     }
 
-    /* Боковая панель */
     .status-badge {
       display: inline-block;
       background: #ffec9e;
@@ -325,17 +307,9 @@
       align-self: flex-start;
     }
 
-    .info-text {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      color: var(--text-muted);
-    }
+    .info-text { font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); }
 
-    .social-shelf {
-      display: flex;
-      gap: 12px;
-      margin: 4px 0;
-    }
+    .social-shelf { display: flex; gap: 12px; margin: 4px 0; }
 
     .social-icon {
       background: var(--card-white);
@@ -373,10 +347,7 @@
       font-size: 0.95rem;
     }
 
-    .rule-box p {
-      line-height: 1.5;
-      color: var(--text-muted);
-    }
+    .rule-box p { line-height: 1.5; color: var(--text-muted); }
 
     .window-footer {
       text-align: center;
@@ -431,23 +402,23 @@
 
     <main class="content-grid">
 
-      <!-- ЛЕВАЯ КОЛОНКА: Сюда скрипт сам добавит карточки -->
+      <!-- ЛЕВАЯ КОЛОНКА -->
       <section id="reviews" class="content-box">
         <div class="box-header">
           <h2>Reviews !</h2>
-          <span class="box-icon">👾</span>
+          <span>👾</span>
         </div>
 
         <div class="box-body" id="reviews-container">
-          <!-- Карточки генерируются автоматически -->
+          <!-- Сюда скрипт вставляет карточки -->
         </div>
       </section>
 
-      <!-- ПРАВАЯ КОЛОНКА: Сайдбар -->
+      <!-- ПРАВАЯ КОЛОНКА -->
       <section id="about" class="content-box">
         <div class="box-header">
           <h2>About & Links !</h2>
-          <span class="box-icon">⭐</span>
+          <span>⭐</span>
         </div>
 
         <div class="box-body">
@@ -481,15 +452,31 @@
 
   </div>
 
-  <!-- Подключаем базу данных и автогенератор карточек -->
-  <script src="reviews.js"></script>
+  <!-- База данных обзоров прямо внутри страницы: ничего не потеряется -->
   <script>
+    const myReviews = {
+      "signalis": {
+        title: "Signalis",
+        subtitle: "Меланхоличный ретро-хоррор с атмосферой PS1, красивым пиксель-артом и густой эстетикой.",
+        genre: "Survival Horror • 2022",
+        totalScore: "9.5",
+        cover: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80"
+      },
+      "hollow-knight": {
+        title: "Hollow Knight",
+        subtitle: "Огромный загадочный мир увядающего королевства, невероятный саундтрек и эталонное управление.",
+        genre: "Метроидвания • 2D",
+        totalScore: "10",
+        cover: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80"
+      }
+    };
+
+    // Отрисовка карточек
     const container = document.getElementById('reviews-container');
+    container.innerHTML = '';
 
-    // Перебираем все игры из объекта reviewsData
-    Object.keys(reviewsData).forEach(key => {
-      const game = reviewsData[key];
-
+    Object.keys(myReviews).forEach(key => {
+      const game = myReviews[key];
       const card = document.createElement('article');
       card.className = 'review-card';
 
