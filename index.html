@@ -3,45 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Игровой дневник // Game Reviews</title>
+  <title>Game Log ★ Мои обзоры игр</title>
+  <!-- Подключаем милые округлые шрифты в стиле ретро -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=DynaPuff:wght@600;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header class="header">
-    <div class="container">
-      <h1 class="logo">PixelLog<span>.</span></h1>
-      <p class="tagline">Честные авторские обзоры игр</p>
+  <!-- Фон со звездочками и узором -->
+  <div class="sparkles-bg"></div>
+
+  <!-- Главное окно в виде ретро-браузера -->
+  <div class="browser-window">
+    
+    <!-- Верхние вкладки-кнопки -->
+    <nav class="window-tabs">
+      <a href="#reviews" class="tab-btn">🎮 Обзоры</a>
+      <a href="#favorites" class="tab-btn">⭐ Любимое</a>
+      <a href="#about" class="tab-btn">💌 Об авторе</a>
+    </nav>
+
+    <!-- Адресная строка браузера с кнопками навигации -->
+    <div class="browser-bar">
+      <div class="browser-controls">
+        <button class="nav-arrow" title="Назад">⇦</button>
+        <button class="nav-arrow" title="Вперед">⇨</button>
+        <button class="nav-arrow" title="Обновить">↻</button>
+      </div>
+
+      <div class="address-input">
+        <span class="url-text">my.gamelog.cafe/reviews</span>
+        <span class="heart-icon">♥</span>
+      </div>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="reviews-grid">
-      <!-- Карточка 1 -->
-      <article class="card">
-        <div class="card-badge">9.5 / 10</div>
-        <h2>Signalis</h2>
-        <p class="genre">Survival Horror // Retro Tech</p>
-        <p class="desc">Холодный, меланхоличный ретрофутуризм с идеальным саунд-дизайном и загадками старой школы.</p>
-        <a href="#review-1" class="read-btn">Читать обзор →</a>
-      </article>
+    <!-- Заголовок / Баннер сайта -->
+    <header class="window-banner">
+      <div class="banner-text">
+        <h1 class="site-title">Game Diary!</h1>
+        <p class="site-subtitle">Уютные обзоры, инди и ретро-игры 🐾</p>
+      </div>
+      <div class="banner-badge">
+        <div class="apple-art">🍎</div>
+      </div>
+    </header>
 
-      <!-- Карточка 2 -->
-      <article class="card">
-        <div class="card-badge">10 / 10</div>
-        <h2>Hollow Knight</h2>
-        <p class="genre">Metroidvania // Soulslike</p>
-        <p class="desc">Масштабное погружение в погибшее королевство насекомых с великолепным управлением и секретами.</p>
-        <a href="#review-2" class="read-btn">Читать обзор →</a>
-      </article>
-    </section>
-  </main>
+    <!-- Основной контент: 2 колонки карточек -->
+    <main class="content-grid">
 
-  <footer>
-    <div class="container">
-      <p>© 2026 Game Reviews. Создано на GitHub Pages.</p>
-    </div>
-  </footer>
+      <!-- Левая колонка: Свежие обзоры -->
+      <section id="reviews" class="content-box">
+        <div class="box-header">
+          <h2>Reviews !</h2>
+          <span class="box-icon">👾</span>
+        </div>
+
+        <div class="box-body">
+          <!-- Карточка обзора 1 -->
+          <article class="mini-review-card">
+            <div class="review-top">
+              <span class="review-tag">Хоррор / Sci-Fi</span>
+              <span class="review-score">★ 9.5</span>
+            </div>
+            <h3 class="game-name">Signalis</h3>
+            <p class="review-desc">
+              Меланхоличный ретро-хоррор с атмосферой PS1, красивым пиксель-артом и густой эстетикой.
+            </p>
+            <a href="signalis.html" class="cute-link">Читать обзор →</a>
+          </article>
+
+          <!-- Карточка обзора 2 -->
+          <article class="mini-review-card">
+            <div class="review-top">
+              <span class="review-tag">Метроидвания</span>
+              <span class="review-score">★ 10/10</span>
+            </div>
+            <h3 class="game-name">Hollow Knight</h3>
+            <p class="review-desc">
+              Огромный загадочный мир жуков, невероятная музыка и идеальное управление.
+            </p>
+            <a href="#" class="cute-link">Читать обзор →</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- Правая колонка: Об авторе и статус -->
+      <section id="about" class="content-box">
+        <div class="box-header">
+          <h2>About & Links !</h2>
+          <span class="box-icon">⭐</span>
+        </div>
+
+        <div class="box-body">
+          <div class="status-badge">NOW PLAYING</div>
+          <p class="info-text">
+            Привет! Здесь я собираю свои впечатления от пройденных видеоигр, анализирую визуал, музыку и сюжет.
+          </p>
+
+          <div class="social-shelf">
+            <a href="#" class="social-icon" title="Discord">💬</a>
+            <a href="#" class="social-icon" title="Steam">🎮</a>
+            <a href="#" class="social-icon" title="Telegram">✈️</a>
+          </div>
+
+          <div class="rule-box">
+            <strong>Оценки:</strong>
+            <p>10 — Шедевр навсегда<br>8–9 — Отлично, рекомендую<br>6–7 — На любителя жанра</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Подвал окна -->
+    <footer class="window-footer">
+      <span>( Made with cute CSS & HTML • 2026 )</span>
+    </footer>
+
+  </div>
 
 </body>
 </html>
