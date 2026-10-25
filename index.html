@@ -73,7 +73,6 @@
 
     .tab-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 2px 5px 0px rgba(90, 110, 67, 0.3);
       background: var(--card-yellow);
     }
 
@@ -308,7 +307,6 @@
     }
 
     .info-text { font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); }
-
     .social-shelf { display: flex; gap: 12px; margin: 4px 0; }
 
     .social-icon {
@@ -323,13 +321,9 @@
       font-size: 1.3rem;
       text-decoration: none;
       box-shadow: 2px 3px 0px rgba(90, 110, 67, 0.2);
-      transition: transform 0.15s ease;
     }
 
-    .social-icon:hover {
-      transform: translateY(-2px);
-      background: var(--card-yellow);
-    }
+    .social-icon:hover { transform: translateY(-2px); background: var(--card-yellow); }
 
     .rule-box {
       background: var(--card-white);
@@ -340,13 +334,7 @@
       box-shadow: 2px 3px 0px rgba(90, 110, 67, 0.1);
     }
 
-    .rule-box strong {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--text-main);
-      font-size: 0.95rem;
-    }
-
+    .rule-box strong { display: block; margin-bottom: 6px; color: var(--text-main); font-size: 0.95rem; }
     .rule-box p { line-height: 1.5; color: var(--text-muted); }
 
     .window-footer {
@@ -383,7 +371,6 @@
         <div class="nav-arrow">⇨</div>
         <div class="nav-arrow">↻</div>
       </div>
-
       <div class="address-input">
         <span class="url-text">my.gamelog.cafe/reviews</span>
         <span class="heart-icon">♥</span>
@@ -402,19 +389,47 @@
 
     <main class="content-grid">
 
-      <!-- ЛЕВАЯ КОЛОНКА -->
+      <!-- Список карточек обзоров -->
       <section id="reviews" class="content-box">
         <div class="box-header">
           <h2>Reviews !</h2>
           <span>👾</span>
         </div>
 
-        <div class="box-body" id="reviews-container">
-          <!-- Сюда скрипт вставляет карточки -->
+        <div class="box-body">
+
+          <!-- КАРТОЧКА 1: Signalis -->
+          <article class="review-card">
+            <div class="card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" alt="Signalis">
+              <div class="card-score-pill">★ 9.5</div>
+            </div>
+            <div class="card-info">
+              <span class="card-tag">Survival Horror • 2022</span>
+              <h3 class="game-name">Signalis</h3>
+              <p class="review-desc">Меланхоличный ретро-хоррор с атмосферой PS1, красивым пиксель-артом и густой эстетикой.</p>
+              <a href="signalis.html" class="cute-btn">Читать обзор →</a>
+            </div>
+          </article>
+
+          <!-- КАРТОЧКА 2: Hollow Knight (пример второй карточки) -->
+          <article class="review-card">
+            <div class="card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80" alt="Hollow Knight">
+              <div class="card-score-pill">★ 10/10</div>
+            </div>
+            <div class="card-info">
+              <span class="card-tag">Метроидвания • 2D</span>
+              <h3 class="game-name">Hollow Knight</h3>
+              <p class="review-desc">Огромный загадочный мир увядающего королевства, невероятный саундтрек и эталонное управление.</p>
+              <a href="signalis.html" class="cute-btn">Читать обзор →</a>
+            </div>
+          </article>
+
         </div>
       </section>
 
-      <!-- ПРАВАЯ КОЛОНКА -->
+      <!-- Правая колонка с информацией -->
       <section id="about" class="content-box">
         <div class="box-header">
           <h2>About & Links !</h2>
@@ -452,49 +467,5 @@
 
   </div>
 
-  <!-- База данных обзоров прямо внутри страницы: ничего не потеряется -->
-  <script>
-    const myReviews = {
-      "signalis": {
-        title: "Signalis",
-        subtitle: "Меланхоличный ретро-хоррор с атмосферой PS1, красивым пиксель-артом и густой эстетикой.",
-        genre: "Survival Horror • 2022",
-        totalScore: "9.5",
-        cover: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80"
-      },
-      "hollow-knight": {
-        title: "Hollow Knight",
-        subtitle: "Огромный загадочный мир увядающего королевства, невероятный саундтрек и эталонное управление.",
-        genre: "Метроидвания • 2D",
-        totalScore: "10",
-        cover: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80"
-      }
-    };
-
-    // Отрисовка карточек
-    const container = document.getElementById('reviews-container');
-    container.innerHTML = '';
-
-    Object.keys(myReviews).forEach(key => {
-      const game = myReviews[key];
-      const card = document.createElement('article');
-      card.className = 'review-card';
-
-      card.innerHTML = `
-        <div class="card-img-wrap">
-          <img src="${game.cover}" alt="${game.title}">
-          <div class="card-score-pill">★ ${game.totalScore}</div>
-        </div>
-        <div class="card-info">
-          <span class="card-tag">${game.genre}</span>
-          <h3 class="game-name">${game.title}</h3>
-          <p class="review-desc">${game.subtitle}</p>
-          <a href="review.html?game=${key}" class="cute-btn">Читать обзор →</a>
-        </div>
-      `;
-
-      container.appendChild(card);
-    });
-  </script>
 </body>
 </html>
