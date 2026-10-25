@@ -3,34 +3,427 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Log ★ Мои обзоры игр</title>
-  <!-- Подключаем милые округлые шрифты в стиле ретро -->
+  <title>Game Diary ★ Мои обзоры игр</title>
+  
+  <!-- Милые округлые шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=DynaPuff:wght@600;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=DynaPuff:wght@600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Нежная светлая палитра: фисташковый, пастельно-желтый, сливочный */
+    :root {
+      --bg-canvas: #f3f7ea;        /* Нежный светлый фон страницы */
+      --window-main: #d8e8b8;      /* Светло-оливковая рамка окна */
+      --window-bar: #cde1a4;       /* Панель адреса */
+      --card-white: #ffffff;       /* Белоснежные карточки */
+      --card-cream: #fbfbee;       /* Сливочный фон блоков */
+      --card-yellow: #fdedad;      /* Мягкий солнечно-желтый акцент */
+      --stroke: 2.5px solid #5a6e43; /* Аккуратная мягкая обводка */
+      --text-main: #334024;        /* Глубокий мягкий травяной цвет текста */
+      --text-muted: #647551;       /* Приглушенный текст */
+      --accent-coral: #ee6363;     /* Кораллово-красный для сердечек и оценок */
+      --shadow: 4px 5px 0px rgba(90, 110, 67, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      /* Очень мягкий точечный ретро-узор */
+      background-image: radial-gradient(#dbe7cc 18%, transparent 19%);
+      background-size: 24px 24px;
+      color: var(--text-main);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      padding: 30px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* Рамка милого окна */
+    .browser-window {
+      width: 100%;
+      max-width: 900px;
+      background: var(--window-main);
+      border: var(--stroke);
+      border-radius: 28px;
+      box-shadow: 6px 8px 0px rgba(90, 110, 67, 0.25);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    /* Верхние круглые кнопки-вкладки */
+    .window-tabs {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 16px 24px 12px;
+    }
+
+    .tab-btn {
+      background: var(--card-white);
+      color: var(--text-main);
+      text-decoration: none;
+      font-family: 'Comfortaa', cursive;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 20px;
+      border: var(--stroke);
+      box-shadow: 2px 3px 0px rgba(90, 110, 67, 0.25);
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 2px 5px 0px rgba(90, 110, 67, 0.3);
+      background: var(--card-yellow);
+    }
+
+    /* Адресная строка браузера */
+    .browser-bar {
+      background: var(--window-bar);
+      border-top: var(--stroke);
+      border-bottom: var(--stroke);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .browser-controls {
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-arrow {
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 1px 2px 0px rgba(90, 110, 67, 0.2);
+    }
+
+    .address-input {
+      flex-grow: 1;
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 20px;
+      padding: 6px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .url-text {
+      font-family: 'Comfortaa', cursive;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #556e3b;
+    }
+
+    .heart-icon {
+      color: var(--accent-coral);
+      font-size: 1.1rem;
+    }
+
+    /* Верхний светлый баннер */
+    .window-banner {
+      background: #e2f0c7;
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: var(--stroke);
+    }
+
+    .site-title {
+      font-family: 'DynaPuff', cursive;
+      font-size: 2.6rem;
+      color: #3b4d24;
+      line-height: 1.1;
+      text-shadow: 2px 2px 0px #ffffff;
+    }
+
+    .site-subtitle {
+      font-family: 'Comfortaa', cursive;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-weight: 700;
+    }
+
+    .apple-art {
+      font-size: 3rem;
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 50%;
+      width: 72px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+    }
+
+    /* Сетка страницы */
+    .content-grid {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: 22px;
+    }
+
+    /* Блоки с заголовками (Information / Reviews) */
+    .content-box {
+      background: var(--card-cream);
+      border: var(--stroke);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .box-header {
+      background: var(--card-yellow);
+      border-bottom: var(--stroke);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .box-header h2 {
+      font-family: 'DynaPuff', cursive;
+      font-size: 1.3rem;
+      color: var(--text-main);
+    }
+
+    .box-icon {
+      font-size: 1.3rem;
+    }
+
+    .box-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* КАРТОЧКА ОБЗОРА */
+    .review-card {
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 2px 4px 0px rgba(90, 110, 67, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .review-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 2px 7px 0px rgba(90, 110, 67, 0.2);
+    }
+
+    .card-img-wrap {
+      width: 100%;
+      height: 140px;
+      border-bottom: var(--stroke);
+      overflow: hidden;
+      background: #eef3df;
+      position: relative;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-score-pill {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 12px;
+      padding: 3px 10px;
+      font-family: 'DynaPuff', cursive;
+      font-size: 0.9rem;
+      color: var(--accent-coral);
+      box-shadow: 1px 2px 0px rgba(90, 110, 67, 0.25);
+    }
+
+    .card-info {
+      padding: 16px 18px;
+    }
+
+    .card-tag {
+      display: inline-block;
+      background: #e6f3d4;
+      border: 1.5px solid #718954;
+      border-radius: 8px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #4b6133;
+      margin-bottom: 8px;
+    }
+
+    .game-name {
+      font-family: 'Comfortaa', cursive;
+      font-size: 1.25rem;
+      color: #3b4d24;
+      margin-bottom: 6px;
+    }
+
+    .review-desc {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .cute-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--card-yellow);
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.88rem;
+      padding: 7px 16px;
+      border-radius: 12px;
+      border: var(--stroke);
+      box-shadow: 2px 3px 0px rgba(90, 110, 67, 0.25);
+      transition: all 0.15s ease;
+    }
+
+    .cute-btn:hover {
+      background: #fff;
+      transform: translate(1px, 2px);
+      box-shadow: 1px 1px 0px rgba(90, 110, 67, 0.25);
+    }
+
+    /* Правая колонка: Про автора, статус и ссылки */
+    .status-badge {
+      display: inline-block;
+      background: #ffec9e;
+      color: #43542b;
+      font-size: 0.75rem;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 10px;
+      border: var(--stroke);
+      align-self: flex-start;
+    }
+
+    .info-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .social-shelf {
+      display: flex;
+      gap: 12px;
+      margin: 4px 0;
+    }
+
+    .social-icon {
+      background: var(--card-white);
+      border: var(--stroke);
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      text-decoration: none;
+      box-shadow: 2px 3px 0px rgba(90, 110, 67, 0.2);
+      transition: transform 0.15s ease;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-2px);
+      background: var(--card-yellow);
+    }
+
+    .rule-box {
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 0.88rem;
+      box-shadow: 2px 3px 0px rgba(90, 110, 67, 0.1);
+    }
+
+    .rule-box strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+    }
+
+    .rule-box p {
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    /* Подвал окна */
+    .window-footer {
+      text-align: center;
+      padding: 16px;
+      font-family: 'Comfortaa', cursive;
+      font-size: 0.85rem;
+      color: #556b3a;
+      font-weight: 700;
+    }
+
+    /* Адаптивность для смартфонов */
+    @media (max-width: 750px) {
+      body { padding: 10px; }
+      .browser-window { border-radius: 18px; }
+      .window-tabs { justify-content: center; }
+      .content-grid { grid-template-columns: 1fr; padding: 14px; }
+      .site-title { font-size: 2rem; }
+      .apple-art { display: none; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Фон со звездочками и узором -->
-  <div class="sparkles-bg"></div>
-
-  <!-- Главное окно в виде ретро-браузера -->
+  <!-- Окно браузера -->
   <div class="browser-window">
     
-    <!-- Верхние вкладки-кнопки -->
+    <!-- Вкладки навигации -->
     <nav class="window-tabs">
       <a href="#reviews" class="tab-btn">🎮 Обзоры</a>
-      <a href="#favorites" class="tab-btn">⭐ Любимое</a>
       <a href="#about" class="tab-btn">💌 Об авторе</a>
     </nav>
 
-    <!-- Адресная строка браузера с кнопками навигации -->
+    <!-- Панель со стрелочками и адресной строкой -->
     <div class="browser-bar">
       <div class="browser-controls">
-        <button class="nav-arrow" title="Назад">⇦</button>
-        <button class="nav-arrow" title="Вперед">⇨</button>
-        <button class="nav-arrow" title="Обновить">↻</button>
+        <div class="nav-arrow">⇦</div>
+        <div class="nav-arrow">⇨</div>
+        <div class="nav-arrow">↻</div>
       </div>
 
       <div class="address-input">
@@ -50,10 +443,10 @@
       </div>
     </header>
 
-    <!-- Основной контент: 2 колонки карточек -->
+    <!-- Сетка контента -->
     <main class="content-grid">
 
-      <!-- Левая колонка: Свежие обзоры -->
+      <!-- ЛЕВАЯ КОЛОНКА: КАРТОЧКИ ОБЗОРОВ -->
       <section id="reviews" class="content-box">
         <div class="box-header">
           <h2>Reviews !</h2>
@@ -61,35 +454,43 @@
         </div>
 
         <div class="box-body">
-          <!-- Карточка обзора 1 -->
-          <article class="mini-review-card">
-            <div class="review-top">
-              <span class="review-tag">Хоррор / Sci-Fi</span>
-              <span class="review-score">★ 9.5</span>
+          
+          <!-- Карточка 1: Signalis -->
+          <article class="review-card">
+            <div class="card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" alt="Signalis">
+              <div class="card-score-pill">★ 9.5</div>
             </div>
-            <h3 class="game-name">Signalis</h3>
-            <p class="review-desc">
-              Меланхоличный ретро-хоррор с атмосферой PS1, красивым пиксель-артом и густой эстетикой.
-            </p>
-            <a href="signalis.html" class="cute-link">Читать обзор →</a>
+            <div class="card-info">
+              <span class="card-tag">Survival Horror • Sci-Fi</span>
+              <h3 class="game-name">Signalis</h3>
+              <p class="review-desc">
+                Меланхоличный ретро-хоррор с атмосферой PS1, красивым пиксель-артом, аналоговым звуком и густой эстетикой.
+              </p>
+              <a href="./signalis.html" class="cute-btn">Читать обзор →</a>
+            </div>
           </article>
 
-          <!-- Карточка обзора 2 -->
-          <article class="mini-review-card">
-            <div class="review-top">
-              <span class="review-tag">Метроидвания</span>
-              <span class="review-score">★ 10/10</span>
+          <!-- Карточка 2: Hollow Knight -->
+          <article class="review-card">
+            <div class="card-img-wrap">
+              <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80" alt="Hollow Knight">
+              <div class="card-score-pill">★ 10/10</div>
             </div>
-            <h3 class="game-name">Hollow Knight</h3>
-            <p class="review-desc">
-              Огромный загадочный мир жуков, невероятная музыка и идеальное управление.
-            </p>
-            <a href="#" class="cute-link">Читать обзор →</a>
+            <div class="card-info">
+              <span class="card-tag">Метроидвания • 2D</span>
+              <h3 class="game-name">Hollow Knight</h3>
+              <p class="review-desc">
+                Огромный загадочный мир увядающего королевства, невероятный саундтрек и эталонное управление.
+              </p>
+              <a href="./signalis.html" class="cute-btn">Читать обзор →</a>
+            </div>
           </article>
+
         </div>
       </section>
 
-      <!-- Правая колонка: Об авторе и статус -->
+      <!-- ПРАВАЯ КОЛОНКА: ИНФОРМАЦИЯ И ССЫЛКИ -->
       <section id="about" class="content-box">
         <div class="box-header">
           <h2>About & Links !</h2>
@@ -99,7 +500,7 @@
         <div class="box-body">
           <div class="status-badge">NOW PLAYING</div>
           <p class="info-text">
-            Привет! Здесь я собираю свои впечатления от пройденных видеоигр, анализирую визуал, музыку и сюжет.
+            Привет! Здесь я собираю свои впечатления от пройденных видеоигр, анализирую визуал, музыку, сюжет и арт-дизайн.
           </p>
 
           <div class="social-shelf">
@@ -109,8 +510,12 @@
           </div>
 
           <div class="rule-box">
-            <strong>Оценки:</strong>
-            <p>10 — Шедевр навсегда<br>8–9 — Отлично, рекомендую<br>6–7 — На любителя жанра</p>
+            <strong>Шкала оценок:</strong>
+            <p>
+              ★ 10 — Шедевр навсегда<br>
+              ★ 8–9 — Отлично, рекомендую<br>
+              ★ 6–7 — На любителя жанра
+            </p>
           </div>
         </div>
       </section>
