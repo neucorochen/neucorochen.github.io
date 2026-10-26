@@ -22,6 +22,7 @@
       --text-muted: #647551;
       --accent-coral: #ee6363;
       --shadow: 4px 5px 0px rgba(90, 110, 67, 0.22);
+      --shadow-block: 4px 5px 0px rgba(77, 96, 58, 0.25);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,9 +53,9 @@
 
     .window-tabs {
       display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      padding: 16px 24px 12px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px 10px;
     }
 
     .tab-btn {
@@ -68,6 +69,10 @@
       border-radius: 20px;
       border: var(--stroke);
       box-shadow: 2px 3px 0px rgba(90, 110, 67, 0.25);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.15s ease;
     }
 
@@ -76,6 +81,89 @@
       background: var(--card-yellow);
     }
 
+    /* ВЕРХНИЙ МУЗЫКАЛЬНЫЙ РЕТРО-ПЛЕЕР */
+    .retro-player-bar {
+      background: #e9f5d3;
+      border-top: var(--stroke);
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+
+    .retro-player-bar.hidden {
+      display: none;
+    }
+
+    .player-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .music-disc {
+      font-size: 1.3rem;
+      animation: spinDisc 3s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .music-disc.playing {
+      animation-play-state: running;
+    }
+
+    @keyframes spinDisc {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .track-info {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: 'Comfortaa', cursive;
+      font-weight: 700;
+      color: #3f5228;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .player-btn {
+      background: var(--card-white);
+      border: 2px solid #5a6e43;
+      border-radius: 10px;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--text-main);
+      cursor: pointer;
+      box-shadow: 1px 2px 0px rgba(90, 110, 67, 0.2);
+      transition: transform 0.1s;
+    }
+
+    .player-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: none;
+    }
+
+    .close-player-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.1rem;
+      color: var(--accent-coral);
+      cursor: pointer;
+      padding: 0 4px;
+      font-weight: bold;
+    }
+
+    /* Адресная строка */
     .browser-bar {
       background: var(--window-bar);
       border-top: var(--stroke);
@@ -101,6 +189,7 @@
       align-items: center;
       justify-content: center;
       box-shadow: 1px 2px 0px rgba(90, 110, 67, 0.2);
+      cursor: pointer;
     }
 
     .address-input {
@@ -161,7 +250,7 @@
       box-shadow: var(--shadow);
     }
 
-    /* Главная сетка: строго 2 колонки */
+    /* ОСНОВНОЙ ВИД: КАТАЛОГ С ОБЗОРАМИ */
     .content-grid {
       padding: 24px;
       display: grid;
@@ -202,7 +291,6 @@
       gap: 18px;
     }
 
-    /* Карточки обзоров */
     .review-card {
       background: var(--card-white);
       border: var(--stroke);
@@ -288,6 +376,7 @@
       border-radius: 12px;
       border: var(--stroke);
       box-shadow: 2px 3px 0px rgba(90, 110, 67, 0.25);
+      cursor: pointer;
       transition: all 0.15s ease;
     }
 
@@ -310,35 +399,254 @@
     }
 
     .info-text { font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); }
-    .social-shelf { display: flex; gap: 12px; margin: 4px 0; }
 
-    .social-icon {
+    /* ВИД СТАТЬИ ОБЗОРА */
+    .article-view-wrap {
+      display: none;
+      padding: 26px 28px;
+      background: var(--card-cream);
+      border-bottom: var(--stroke);
+    }
+
+    .article-lead {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: #3b4d24;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
+    .sub-heading {
+      font-family: 'Comfortaa', cursive;
+      font-size: 1.35rem;
+      color: #3b4d24;
+      margin: 26px 0 10px;
+    }
+
+    .article-text {
+      font-size: 1.02rem;
+      line-height: 1.75;
+      color: #4a5937;
+      margin-bottom: 18px;
+    }
+
+    .cover-card {
       background: var(--card-white);
       border: var(--stroke);
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-block);
+      margin-bottom: 24px;
+    }
+
+    .cover-card img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* БЛОК МУЗЫКИ ВНУТРИ СТАТЬИ */
+    .ost-box {
+      background: #f6faee;
+      border: 2px dashed #718954;
+      border-radius: 18px;
+      padding: 16px 20px;
+      margin: 22px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ost-title {
+      font-family: 'Comfortaa', cursive;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #3b4d24;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      text-decoration: none;
-      box-shadow: 2px 3px 0px rgba(90, 110, 67, 0.2);
+      gap: 8px;
     }
 
-    .social-icon:hover { transform: translateY(-2px); background: var(--card-yellow); }
+    .track-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-    .rule-box {
+    .track-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      border: 1.5px solid #8ca36f;
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .track-item:hover {
+      background: var(--card-yellow);
+    }
+
+    .track-play-tag {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: var(--accent-coral);
+    }
+
+    /* Плюсы и минусы */
+    .verdict-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin: 30px 0 24px;
+    }
+
+    .pros-cons-card {
       background: var(--card-white);
       border: var(--stroke);
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 0.88rem;
-      box-shadow: 2px 3px 0px rgba(90, 110, 67, 0.1);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow-block);
     }
 
-    .rule-box strong { display: block; margin-bottom: 6px; color: var(--text-main); font-size: 0.95rem; }
-    .rule-box p { line-height: 1.5; color: var(--text-muted); }
+    .card-tag-head {
+      display: inline-block;
+      font-family: 'Comfortaa', cursive;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 4px 12px;
+      border-radius: 10px;
+      border: 2px solid var(--win-border);
+      margin-bottom: 14px;
+    }
+
+    .green-tag { background: #d4eec4; color: #2b5417; }
+    .red-tag { background: #ffd9d9; color: #8c1e1e; }
+
+    .pros-cons-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pros-cons-card li {
+      position: relative;
+      padding-left: 22px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .pros li::before {
+      content: "✔";
+      position: absolute;
+      left: 0;
+      color: #4b8f2c;
+      font-weight: bold;
+    }
+
+    .cons li::before {
+      content: "✖";
+      position: absolute;
+      left: 0;
+      color: var(--accent-coral);
+      font-weight: bold;
+    }
+
+    /* Диаграмма капсул */
+    .chart-section {
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 24px;
+      padding: 24px 20px;
+      margin: 30px 0 24px;
+      box-shadow: var(--shadow-block);
+    }
+
+    .chart-header { text-align: center; margin-bottom: 22px; }
+    .chart-header h3 {
+      font-family: 'Comfortaa', cursive;
+      font-size: 1.35rem;
+      color: #3b4d24;
+      margin-bottom: 4px;
+    }
+    .chart-sub { font-size: 0.85rem; color: var(--text-muted); font-weight: 700; }
+
+    .capsules-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 20px;
+      padding: 8px 0;
+    }
+
+    .capsule-col { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+    .capsule-track {
+      width: 66px;
+      height: 195px;
+      background: #fbf9ef;
+      border: 3.5px solid #ffffff;
+      outline: 2.5px solid #5a6e43;
+      border-radius: 50px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      box-shadow: 2px 4px 0px rgba(77, 96, 58, 0.15);
+    }
+
+    .capsule-fill {
+      width: 100%;
+      border-radius: 0 0 46px 46px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 12px;
+      box-sizing: border-box;
+    }
+
+    .fill-pink { background-color: #ef76a7; }
+    .fill-lime { background-color: #afe065; }
+    .fill-softpink { background-color: #f396c3; }
+    .fill-cyan { background-color: #6bcacc; }
+
+    .capsule-score {
+      font-family: 'DynaPuff', cursive;
+      font-size: 0.95rem;
+      color: #ffffff;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.35);
+      font-weight: 700;
+    }
+
+    .capsule-label {
+      font-family: 'Comfortaa', cursive;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .cute-final-verdict {
+      background: var(--card-yellow);
+      border: var(--stroke);
+      border-radius: 16px;
+      padding: 18px 22px;
+      box-shadow: 2px 3px 0px rgba(77, 96, 58, 0.2);
+    }
+
+    .cute-final-verdict h3 {
+      font-family: 'Comfortaa', cursive;
+      color: #3b4d24;
+      margin-bottom: 6px;
+      font-size: 1.15rem;
+    }
+
+    .cute-final-verdict p { color: #4b583b; font-size: 0.98rem; line-height: 1.6; }
 
     .window-footer {
       text-align: center;
@@ -352,82 +660,84 @@
     @media (max-width: 780px) {
       body { padding: 10px; }
       .browser-window { border-radius: 18px; }
-      .window-tabs { justify-content: center; }
       .content-grid { grid-template-columns: 1fr; padding: 14px; }
-      .site-title { font-size: 2rem; }
+      .retro-player-bar { flex-direction: column; align-items: stretch; gap: 8px; }
+      .player-controls { justify-content: center; }
+      .capsules-container { gap: 10px; }
+      .capsule-track { width: 52px; height: 160px; }
+      .verdict-grid { grid-template-columns: 1fr; }
       .apple-art { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Главное окно -->
   <div class="browser-window">
     
     <!-- Вкладки навигации -->
     <nav class="window-tabs">
-      <a href="#reviews" class="tab-btn">🎮 Обзоры</a>
-      <a href="#about" class="tab-btn">💌 Об авторе</a>
+      <button class="tab-btn" onclick="showCatalog()">🎮 Все обзоры</button>
+      <button class="tab-btn" id="toggle-player-btn" onclick="togglePlayerVisibility()">🎵 Плеер</button>
     </nav>
 
-    <!-- Панель браузера -->
+    <!-- ВСТРОЕННЫЙ МУЗЫКАЛЬНЫЙ РЕТРО-ПЛЕЕР (НЕ ПРЕРЫВАЕТСЯ ПРИ ПЕРЕХОДАХ) -->
+    <div class="retro-player-bar" id="music-player-bar">
+      <div class="player-left">
+        <span class="music-disc" id="music-disc">💿</span>
+        <div class="track-info" id="player-track-name">Трек не выбран (нажмите трек в обзоре)</div>
+      </div>
+
+      <div class="player-controls">
+        <button class="player-btn" onclick="prevTrack()" title="Предыдущий трек">⏮</button>
+        <button class="player-btn" id="play-pause-btn" onclick="togglePlayPause()" title="Пауза / Плей">▶</button>
+        <button class="player-btn" onclick="nextTrack()" title="Следующий трек">⏭</button>
+        <button class="player-btn" id="loop-mode-btn" onclick="switchLoopMode()" title="Режим зацикливания">🔂 Один</button>
+        <button class="close-player-btn" onclick="togglePlayerVisibility()" title="Скрыть плеер">✖</button>
+      </div>
+    </div>
+
+    <!-- Адресная строка -->
     <div class="browser-bar">
       <div class="browser-controls">
-        <div class="nav-arrow">⇦</div>
+        <div class="nav-arrow" onclick="showCatalog()">⇦</div>
         <div class="nav-arrow">⇨</div>
-        <div class="nav-arrow">↻</div>
+        <div class="nav-arrow" onclick="location.reload()">↻</div>
       </div>
       <div class="address-input">
-        <span class="url-text">my.gamelog.cafe/reviews</span>
+        <span class="url-text" id="address-url">my.gamelog.cafe/reviews</span>
         <span class="heart-icon">♥</span>
       </div>
     </div>
 
-    <!-- Заголовок / Баннер сайта -->
+    <!-- Шапка-баннер -->
     <header class="window-banner">
       <div class="banner-text">
-        <h1 class="site-title">Game Diary!</h1>
-        <p class="site-subtitle">Уютные обзоры, инди и ретро-игры 🐾</p>
+        <h1 class="site-title" id="banner-title">Game Diary!</h1>
+        <p class="site-subtitle" id="banner-subtitle">Уютные обзоры, инди и ретро-игры 🐾</p>
       </div>
       <div class="banner-badge">
         <div class="apple-art">🍎</div>
       </div>
     </header>
 
-    <!-- ОСНОВНАЯ СЕТКА -->
-    <main class="content-grid">
-
-      <!-- ЛЕВАЯ КОЛОНКА С ОБЗОРАМИ -->
+    <!-- 1. РЕЖИМ КАТАЛОГА: СПИСОК ОБЗОРОВ -->
+    <main class="content-grid" id="catalog-view">
       <section id="reviews" class="content-box">
         <div class="box-header">
           <h2>Reviews !</h2>
           <span>👾</span>
         </div>
+        <div class="box-body" id="catalog-cards">
+          <!-- Карточки генерируются скриптом автоматически -->
+        </div>
+      </section>
 
-        <div class="box-body">
-
-          <!-- КАРТОЧКА 1: ВАША ИГРА -->
-          <article class="review-card">
-            <div class="card-img-wrap">
-              <!-- Замените images/your-cover.png на точное имя вашей картинки в папке images -->
-              <img src="images/yaoitronoblojjka.png" alt="job hunting 9000 deluhx">
-              <div class="card-score-pill">★ 10</div>
-            </div>
-            <div class="card-info">
-              <span class="card-tag">Визуальная новелла • 2025</span>
-              <h3 class="game-name">job hunting 9000 deluhx</h3>
-              <p class="review-desc">Шуточная визуальная новелла про цветастого парня робо-вампира-демона-ангела.</p>
-              <a href="job_hunting_9000_deluhx.html" class="cute-btn">Читать обзор →</a>
-            </div>
-          </article>
-
-      <!-- ПРАВАЯ КОЛОНКА С ИНФОРМАЦИЕЙ (ТЕПЕРЬ СТРОГО ВНУТРИ ОКНА) -->
+      <!-- ПРАВАЯ КОЛОНКА С ИНФОРМАЦИЕЙ -->
       <section id="about" class="content-box">
         <div class="box-header">
           <h2>About & Links !</h2>
           <span>⭐</span>
         </div>
-
         <div class="box-body">
           <div class="status-badge">NOW PLAYING</div>
           <p class="info-text">
@@ -435,15 +745,321 @@
           </p>
         </div>
       </section>
-
     </main>
 
-    <!-- Подвал окна -->
+    <!-- 2. РЕЖИМ СТАТЬИ: ПОЛНЫЙ ОБЗОР -->
+    <main class="article-view-wrap" id="article-view">
+      <!-- Статья открывается здесь без перезагрузки вкладки, сохраняя музыку -->
+    </main>
+
     <footer class="window-footer">
       <span>( Made with cute CSS & HTML • 2026 )</span>
     </footer>
 
   </div>
 
+  <!-- СКРЫТЫЙ ТЕГ ДЛЯ ЗВУКА -->
+  <audio id="audio-engine" preload="auto"></audio>
+
+  <script>
+    // ==========================================
+    // ЗДЕСЬ ДОБАВЛЯЮТСЯ ВАШИ ИГРЫ И ИХ МУЗЫКА
+    // ==========================================
+    const allReviews = {
+      "job-hunting-9000": {
+        title: "job hunting 9000 deluhx",
+        subtitle: "Шуточная визуальная новелла про цветастого парня робо-вампира-демона-ангела.",
+        genre: "Визуальная новелла • 2025",
+        totalScore: "10",
+        cover: "images/yaoitronoblojjka.png",
+        dev: "Авторский проект",
+        time: "~1–2 часа",
+        difficulty: "Легкая",
+        
+        // Список музыки к игре (укажите свои файлы из папки audio/ или ссылки):
+        playlist: [
+          { title: "Main Theme (Demo)", url: "https://cdn.freesound.org/previews/612/612610_5674468-lq.mp3" },
+          { title: "Cafe Encounter", url: "https://cdn.freesound.org/previews/675/675831_11861866-lq.mp3" }
+        ],
+
+        fullText: `
+          <p class="article-lead">
+            Яркая, ироничная и безумно стильная новелла с запоминающимся визуальным дизайном.
+          </p>
+          <h2 class="sub-heading">Сюжет и атмосфера</h2>
+          <p class="article-text">
+            История наполнена отличным юмором, яркими персонажами и неожиданными диалогами.
+          </p>
+        `,
+        pros: [
+          "Неповторимый авторский арт-стиль и персонажи",
+          "Забавные диалоги и юмор",
+          "Приятная атмосфера"
+        ],
+        cons: [
+          "Хочется продолжения!"
+        ],
+        scores: { design: 10, plot: 9.5, mechanic: 8.5, sound: 9.5 },
+        verdict: "Очаровательная работа, которая поднимает настроение и радует глаз."
+      }
+    };
+
+    // ==========================================
+    // ЛОГИКА МУЗЫКАЛЬНОГО ПЛЕЕРА
+    // ==========================================
+    const audio = document.getElementById('audio-engine');
+    let currentPlaylist = [];
+    let currentTrackIdx = 0;
+    let loopMode = 'one'; // 'one' (один трек) или 'all' (вся очередь)
+
+    function loadAndPlayTrack(index) {
+      if (!currentPlaylist.length) return;
+      currentTrackIdx = index;
+      const track = currentPlaylist[currentTrackIdx];
+      audio.src = track.url;
+      audio.play().then(() => {
+        updatePlayerUI(true, track.title);
+      }).catch(err => {
+        console.log("Воспроизведение ожидает клика пользователя:", err);
+      });
+    }
+
+    function togglePlayPause() {
+      if (!audio.src) {
+        const firstGame = Object.values(allReviews)[0];
+        if (firstGame && firstGame.playlist && firstGame.playlist.length) {
+          currentPlaylist = firstGame.playlist;
+          loadAndPlayTrack(0);
+          return;
+        }
+      }
+      if (audio.paused) {
+        audio.play();
+        updatePlayerUI(true);
+      } else {
+        audio.pause();
+        updatePlayerUI(false);
+      }
+    }
+
+    function nextTrack() {
+      if (!currentPlaylist.length) return;
+      currentTrackIdx = (currentTrackIdx + 1) % currentPlaylist.length;
+      loadAndPlayTrack(currentTrackIdx);
+    }
+
+    function prevTrack() {
+      if (!currentPlaylist.length) return;
+      currentTrackIdx = (currentTrackIdx - 1 + currentPlaylist.length) % currentPlaylist.length;
+      loadAndPlayTrack(currentTrackIdx);
+    }
+
+    function switchLoopMode() {
+      const btn = document.getElementById('loop-mode-btn');
+      if (loopMode === 'one') {
+        loopMode = 'all';
+        btn.textContent = '🔁 Все';
+      } else {
+        loopMode = 'one';
+        btn.textContent = '🔂 Один';
+      }
+    }
+
+    audio.addEventListener('ended', () => {
+      if (loopMode === 'one') {
+        audio.currentTime = 0;
+        audio.play();
+      } else {
+        nextTrack();
+      }
+    });
+
+    function updatePlayerUI(isPlaying, title) {
+      const disc = document.getElementById('music-disc');
+      const btn = document.getElementById('play-pause-btn');
+      const nameEl = document.getElementById('player-track-name');
+      
+      if (title) nameEl.textContent = `Играет: ${title}`;
+      if (isPlaying) {
+        disc.classList.add('playing');
+        btn.textContent = '⏸';
+      } else {
+        disc.classList.remove('playing');
+        btn.textContent = '▶';
+      }
+    }
+
+    function togglePlayerVisibility() {
+      const bar = document.getElementById('music-player-bar');
+      bar.classList.toggle('hidden');
+    }
+
+    // ==========================================
+    // ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ БЕЗ ПЕРЕЗАГРУЗКИ
+    // ==========================================
+    const catalogView = document.getElementById('catalog-view');
+    const articleView = document.getElementById('article-view');
+    const bannerTitle = document.getElementById('banner-title');
+    const bannerSubtitle = document.getElementById('banner-subtitle');
+    const addressUrl = document.getElementById('address-url');
+
+    function showCatalog() {
+      articleView.style.display = 'none';
+      catalogView.style.display = 'grid';
+      bannerTitle.textContent = 'Game Diary!';
+      bannerSubtitle.textContent = 'Уютные обзоры, инди и ретро-игры 🐾';
+      addressUrl.textContent = 'my.gamelog.cafe/reviews';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openReview(key) {
+      const game = allReviews[key];
+      if (!game) return;
+
+      catalogView.style.display = 'none';
+      articleView.style.display = 'block';
+
+      bannerTitle.textContent = game.title;
+      bannerSubtitle.textContent = game.subtitle;
+      addressUrl.textContent = `my.gamelog.cafe/reviews/${key}`;
+
+      let tracksHtml = '';
+      if (game.playlist && game.playlist.length) {
+        tracksHtml = `
+          <div class="ost-box">
+            <div class="ost-title">🎵 Саундтрек из игры (нажмите на трек, чтобы включить):</div>
+            <div class="track-list">
+              ${game.playlist.map((tr, idx) => `
+                <div class="track-item" onclick="playGameTrack('${key}', ${idx})">
+                  <span>▶ ${tr.title}</span>
+                  <span class="track-play-tag">Слушать</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      articleView.innerHTML = `
+        <div class="cover-card">
+          <img src="${game.cover}" alt="${game.title}" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80'">
+        </div>
+
+        ${tracksHtml}
+
+        <div class="game-meta-bar" style="display: flex; gap: 15px; margin-bottom: 20px; font-weight: bold; font-size: 0.9rem; color: #556e3b;">
+          <span>Разработчик: ${game.dev}</span> •
+          <span>Время: ${game.time}</span> •
+          <span>Сложность: ${game.difficulty}</span>
+        </div>
+
+        ${game.fullText}
+
+        <div class="verdict-grid">
+          <div class="pros-cons-card pros">
+            <div class="card-tag-head green-tag">Плюсы ! 💚</div>
+            <ul>
+              ${game.pros.map(p => `<li>${p}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="pros-cons-card cons">
+            <div class="card-tag-head red-tag">Минусы ! 🍎</div>
+            <ul>
+              ${game.cons.map(c => `<li>${c}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+
+        <section class="chart-section">
+          <div class="chart-header">
+            <h3>Параметры игры ★ Breakdown</h3>
+            <span class="chart-sub">Оценка ключевых элементов</span>
+          </div>
+
+          <div class="capsules-container">
+            <div class="capsule-col">
+              <div class="capsule-track">
+                <div class="capsule-fill fill-pink" style="height: ${game.scores.design * 10}%;">
+                  <span class="capsule-score">${game.scores.design}</span>
+                </div>
+              </div>
+              <span class="capsule-label">Дизайн</span>
+            </div>
+
+            <div class="capsule-col">
+              <div class="capsule-track">
+                <div class="capsule-fill fill-lime" style="height: ${game.scores.plot * 10}%;">
+                  <span class="capsule-score">${game.scores.plot}</span>
+                </div>
+              </div>
+              <span class="capsule-label">Сюжет</span>
+            </div>
+
+            <div class="capsule-col">
+              <div class="capsule-track">
+                <div class="capsule-fill fill-softpink" style="height: ${game.scores.mechanic * 10}%;">
+                  <span class="capsule-score">${game.scores.mechanic}</span>
+                </div>
+              </div>
+              <span class="capsule-label">Механика</span>
+            </div>
+
+            <div class="capsule-col">
+              <div class="capsule-track">
+                <div class="capsule-fill fill-cyan" style="height: ${game.scores.sound * 10}%;">
+                  <span class="capsule-score">${game.scores.sound}</span>
+                </div>
+              </div>
+              <span class="capsule-label">Звук</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="cute-final-verdict">
+          <h3>Вердикт автора:</h3>
+          <p>${game.verdict}</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 25px;">
+          <button class="cute-btn" onclick="showCatalog()">← Вернуться ко всем обзорам</button>
+        </div>
+      `;
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function playGameTrack(gameKey, trackIdx) {
+      const game = allReviews[gameKey];
+      if (!game) return;
+      currentPlaylist = game.playlist;
+      loadAndPlayTrack(trackIdx);
+    }
+
+    // ==========================================
+    // ГЕНЕРАЦИЯ КАРТОЧЕК В КАТАЛОГЕ
+    // ==========================================
+    const catalogCards = document.getElementById('catalog-cards');
+    catalogCards.innerHTML = '';
+
+    Object.keys(allReviews).forEach(key => {
+      const g = allReviews[key];
+      const card = document.createElement('article');
+      card.className = 'review-card';
+      card.innerHTML = `
+        <div class="card-img-wrap">
+          <img src="${g.cover}" alt="${g.title}" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80'">
+          <div class="card-score-pill">★ ${g.totalScore}</div>
+        </div>
+        <div class="card-info">
+          <span class="card-tag">${g.genre}</span>
+          <h3 class="game-name">${g.title}</h3>
+          <p class="review-desc">${g.subtitle}</p>
+          <button class="cute-btn" onclick="openReview('${key}')">Читать обзор →</button>
+        </div>
+      `;
+      catalogCards.appendChild(card);
+    });
+  </script>
 </body>
 </html>
