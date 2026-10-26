@@ -1,6 +1,6 @@
 /* Основной курсор-яблоко для всего сайта */
 html, body {
-  cursor: url('images/apple-cursor1.png') 4 2, auto;
+  cursor: url('images/apple-cursor12.png') 4 2, auto;
 }
 
 /* Курсор-палец для всех кликабельных элементов */
@@ -12,5 +12,5 @@ button,
 .close-player-btn, 
 .nav-arrow, 
 .track-item {
-  cursor: url('images/apple-pointer1.png') 16 2, pointer !important;
+  cursor: url('images/apple-pointer12.png') 16 2, pointer !important;
 }
