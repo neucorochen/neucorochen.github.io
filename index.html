@@ -51,6 +51,7 @@
       margin-bottom: 20px;
     }
 
+    /* Вкладки навигации сверху */
     .window-tabs {
       display: flex;
       justify-content: space-between;
@@ -212,6 +213,7 @@
 
     .heart-icon { color: var(--accent-coral); font-size: 1.1rem; }
 
+    /* Баннер шапки */
     .window-banner {
       background: #e2f0c7;
       padding: 24px 28px;
@@ -223,7 +225,7 @@
 
     .site-title {
       font-family: 'DynaPuff', cursive;
-      font-size: 2.6rem;
+      font-size: 2.4rem;
       color: #3b4d24;
       line-height: 1.1;
       text-shadow: 2px 2px 0px #ffffff;
@@ -231,10 +233,11 @@
 
     .site-subtitle {
       font-family: 'Comfortaa', cursive;
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       color: var(--text-muted);
       margin-top: 6px;
       font-weight: 700;
+      line-height: 1.45;
     }
 
     .apple-art {
@@ -408,6 +411,66 @@
       border-bottom: var(--stroke);
     }
 
+    .review-status-pill {
+      display: inline-block;
+      background: var(--card-white);
+      color: var(--text-dark);
+      border: 2px solid var(--win-border);
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      margin-bottom: 6px;
+    }
+
+    .cute-score-badge {
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 20px;
+      padding: 10px 18px;
+      text-align: center;
+      box-shadow: var(--shadow-block);
+      min-width: 100px;
+      flex-shrink: 0;
+    }
+
+    .score-stars { display: block; font-size: 0.8rem; color: var(--accent-coral); }
+    .score-val {
+      font-family: 'DynaPuff', cursive;
+      font-size: 2.2rem;
+      color: var(--accent-coral);
+      line-height: 1;
+    }
+    .score-max { font-size: 0.85rem; font-weight: 800; color: var(--win-border); }
+
+    .game-meta-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      background: #eef5df;
+      border: 2px solid var(--win-border);
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .cover-card {
+      background: var(--card-white);
+      border: var(--stroke);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-block);
+      margin-bottom: 24px;
+    }
+
+    .cover-card img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
+    }
+
     .article-lead {
       font-size: 1.15rem;
       line-height: 1.7;
@@ -430,20 +493,28 @@
       margin-bottom: 18px;
     }
 
-    .cover-card {
+    .cute-screenshot-card {
       background: var(--card-white);
       border: var(--stroke);
       border-radius: 18px;
       overflow: hidden;
       box-shadow: var(--shadow-block);
-      margin-bottom: 24px;
+      margin: 24px 0;
     }
 
-    .cover-card img {
+    .cute-screenshot-card img {
       width: 100%;
-      height: 320px;
-      object-fit: cover;
+      height: auto;
       display: block;
+      border-bottom: var(--stroke);
+    }
+
+    .cute-screenshot-card figcaption {
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #556642;
+      background: #fbfbee;
     }
 
     /* БЛОК МУЗЫКИ ВНУТРИ СТАТЬИ */
@@ -710,12 +781,12 @@
     </div>
 
     <!-- Шапка-баннер -->
-    <header class="window-banner">
+    <header class="window-banner" id="main-banner">
       <div class="banner-text">
         <h1 class="site-title" id="banner-title">Game Diary!</h1>
         <p class="site-subtitle" id="banner-subtitle">Уютные обзоры, инди и ретро-игры 🐾</p>
       </div>
-      <div class="banner-badge">
+      <div class="banner-badge" id="banner-badge">
         <div class="apple-art">🍎</div>
       </div>
     </header>
@@ -763,44 +834,51 @@
 
   <script>
     // ==========================================
-    // ЗДЕСЬ ДОБАВЛЯЮТСЯ ВАШИ ИГРЫ И ИХ МУЗЫКА
+    // ВАША ИГРА СО ВСЕМ ТЕКСТОМ И МУЗЫКОЙ
     // ==========================================
     const allReviews = {
-      "job-hunting-9000": {
+      "job_hunting_9000_deluhx": {
         title: "job hunting 9000 deluhx",
-        subtitle: "Шуточная визуальная новелла про цветастого парня робо-вампира-демона-ангела.",
+        subtitle: "Отчаявшийся безработный главный герой вынужден общаться и строить отношения с ожившим ОС по имени xX_YAOITRON9000_Xx в ядовито-яркой стилистике, который пытается наладить чужую жизнь всеми доступными ему нелепыми и хаотичными способами. 📻",
         genre: "Визуальная новелла • 2025",
         totalScore: "10",
-        cover: "images/yaoitronoblojjka.png",
-        dev: "Авторский проект",
-        time: "~1–2 часа",
-        difficulty: "Легкая",
+        cover: "images/yaoitronobzor.png",
+        dev: "axetrax1",
+        time: "~1.5-2 часа",
+        difficulty: "Очень лёгкая",
         
-        // Список музыки к игре (укажите свои файлы из папки audio/ или ссылки):
+        // Музыка к новелле: можно указать свои пути audio/файл.mp3
         playlist: [
-          { title: "Main Theme (Demo)", url: "https://cdn.freesound.org/previews/612/612610_5674468-lq.mp3" },
-          { title: "Cafe Encounter", url: "https://cdn.freesound.org/previews/675/675831_11861866-lq.mp3" }
+          { title: "YAOITRON Pop Theme", url: "https://cdn.freesound.org/previews/612/612610_5674468-lq.mp3" },
+          { title: "Glitched Encounter", url: "https://cdn.freesound.org/previews/675/675831_11861866-lq.mp3" }
         ],
 
         fullText: `
           <p class="article-lead">
-            Яркая, ироничная и безумно стильная новелла с запоминающимся визуальным дизайном.
+            job hunting 9000 deluhx - довольно необычная новелла из-за того, что она высмеивает времена Мэри Сью и всемогущих ОС.
           </p>
-          <h2 class="sub-heading">Сюжет и атмосфера</h2>
+
+          <h2 class="sub-heading">Начало игры</h2>
           <p class="article-text">
-            История наполнена отличным юмором, яркими персонажами и неожиданными диалогами.
+            Экран ноутбука рябит вкладками сайтов по поиску работы, где от соискателя требуют нереалистичный опыт и горы навыков. Герой судорожно пытается составить хоть какое-то подобие резюме. Внезапно монитор начинает глитчить, выдавать графические артефакты и мигать ядовитыми цветами. Из цифрового шума, словно материализовавшись прямо из забытой папки со старыми рисунками или закрытого треда на форуме, в комнате появляется xX_YAOITRON9000_Xx.
           </p>
+
+          <figure class="cute-screenshot-card">
+            <img src="images/yaoitronzveta.png" alt="Скриншот игрового процесса" onerror="this.src='https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80'">
+            <figcaption>★ Яойтрон выкрашен в кислотные цвета. Смотря на него можно вспомнить типичных Мэри Сью с ютуба, которые были женаты на Сансе, Фокси и т.д.</figcaption>
+          </figure>
         `,
         pros: [
-          "Неповторимый авторский арт-стиль и персонажи",
-          "Забавные диалоги и юмор",
-          "Приятная атмосфера"
+          "Искрометная постирония и интернет-юмор: Игра виртуозно пародирует клише фанфикшна 2000–2010-х, нелепые тропы яндере/оверпауэр ОС, веб-эстетику девиантарта и симуляторы свиданий.",
+          "Вариативность: Для инди-проекта небольшого масштаба здесь внушительное число сюжетных развилок, побочных путей и концовок.",
+          "Уникальный визуальный почерк."
         ],
         cons: [
-          "Хочется продолжения!"
+          "Зависимость от контекста: Если вы не застали эпоху фэндомов 2000-х Мэри Сью и кричащих оккультно-анимешных персонажей, часть шуток вы можете не понять.",
+          "Ограниченный саунд-дизайн: Музыка состоит преимущественно из бесплатных треков, которые местами звучат повторяющеся на длинных ветках."
         ],
-        scores: { design: 10, plot: 9.5, mechanic: 8.5, sound: 9.5 },
-        verdict: "Очаровательная работа, которая поднимает настроение и радует глаз."
+        scores: { design: 9.5, plot: 10, mechanic: 6.0, sound: 7.0 },
+        verdict: "Игра идеально подходит тем, кто ценит самоироничные веб-новеллы, мем-культуру и не боится визуальных экспериментов."
       }
     };
 
@@ -901,6 +979,7 @@
     const articleView = document.getElementById('article-view');
     const bannerTitle = document.getElementById('banner-title');
     const bannerSubtitle = document.getElementById('banner-subtitle');
+    const bannerBadge = document.getElementById('banner-badge');
     const addressUrl = document.getElementById('address-url');
 
     function showCatalog() {
@@ -908,6 +987,7 @@
       catalogView.style.display = 'grid';
       bannerTitle.textContent = 'Game Diary!';
       bannerSubtitle.textContent = 'Уютные обзоры, инди и ретро-игры 🐾';
+      bannerBadge.innerHTML = '<div class="apple-art">🍎</div>';
       addressUrl.textContent = 'my.gamelog.cafe/reviews';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -919,15 +999,24 @@
       catalogView.style.display = 'none';
       articleView.style.display = 'block';
 
-      bannerTitle.textContent = game.title;
+      // Обновляем шапку окна под стиль страницы обзора
+      bannerTitle.innerHTML = `<span class="review-status-pill">${game.genre}</span><br>${game.title}`;
       bannerSubtitle.textContent = game.subtitle;
+      bannerBadge.innerHTML = `
+        <div class="cute-score-badge">
+          <span class="score-stars">★★★</span>
+          <span class="score-val">${game.totalScore}</span>
+          <span class="score-max">/ 10</span>
+        </div>
+      `;
       addressUrl.textContent = `my.gamelog.cafe/reviews/${key}`;
 
+      // Музыкальный список треков внутри обзора
       let tracksHtml = '';
       if (game.playlist && game.playlist.length) {
         tracksHtml = `
           <div class="ost-box">
-            <div class="ost-title">🎵 Саундтрек из игры (нажмите на трек, чтобы включить):</div>
+            <div class="ost-title">🎵 Саундтрек из новеллы (нажмите, чтобы включить):</div>
             <div class="track-list">
               ${game.playlist.map((tr, idx) => `
                 <div class="track-item" onclick="playGameTrack('${key}', ${idx})">
@@ -940,21 +1029,23 @@
         `;
       }
 
+      // Формируем полный обзор
       articleView.innerHTML = `
+        <div class="game-meta-bar">
+          <span><strong>Разработчик:</strong> ${game.dev}</span>
+          <span><strong>Время:</strong> ${game.time}</span>
+          <span><strong>Сложность:</strong> ${game.difficulty}</span>
+        </div>
+
         <div class="cover-card">
-          <img src="${game.cover}" alt="${game.title}" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80'">
+          <img src="${game.cover}" alt="${game.title}" onerror="this.src='images/yaoitronoblojjka.png'">
         </div>
 
         ${tracksHtml}
 
-        <div class="game-meta-bar" style="display: flex; gap: 15px; margin-bottom: 20px; font-weight: bold; font-size: 0.9rem; color: #556e3b;">
-          <span>Разработчик: ${game.dev}</span> •
-          <span>Время: ${game.time}</span> •
-          <span>Сложность: ${game.difficulty}</span>
-        </div>
-
         ${game.fullText}
 
+        <!-- Плюсы и минусы -->
         <div class="verdict-grid">
           <div class="pros-cons-card pros">
             <div class="card-tag-head green-tag">Плюсы ! 💚</div>
@@ -971,9 +1062,10 @@
           </div>
         </div>
 
+        <!-- ДИАГРАММА ПАРАМЕТРОВ С ВАШИМИ ОЦЕНКАМИ -->
         <section class="chart-section">
           <div class="chart-header">
-            <h3>Параметры игры ★ Breakdown</h3>
+            <h3>Параметры игры ★</h3>
             <span class="chart-sub">Оценка ключевых элементов</span>
           </div>
 
@@ -1016,6 +1108,7 @@
           </div>
         </section>
 
+        <!-- Вердикт -->
         <div class="cute-final-verdict">
           <h3>Вердикт автора:</h3>
           <p>${game.verdict}</p>
@@ -1048,7 +1141,7 @@
       card.className = 'review-card';
       card.innerHTML = `
         <div class="card-img-wrap">
-          <img src="${g.cover}" alt="${g.title}" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80'">
+          <img src="images/yaoitronoblojjka.png" alt="${g.title}" onerror="this.src='${g.cover}'">
           <div class="card-score-pill">★ ${g.totalScore}</div>
         </div>
         <div class="card-info">
