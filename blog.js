@@ -64,56 +64,75 @@ function showDiary() {
 }
 
 // ==========================================
-// 3. СИСТЕМА ГЛОБАЛЬНЫХ ЛАЙКОВ (ДЛЯ ВСЕХ ПОЛЬЗОВАТЕЛЕЙ)
+// 3. СИСТЕМА ЛАЙКОВ (БЕЗ ОШИБКИ UNDEFINED)
 // ==========================================
-
-// Уникальное пространство имён вашего сайта
 const LIKES_NAMESPACE = "neucorochen_gamelog";
 
-// Функция загрузки глобального количества лайков с сервера
+// Функция безопасного извлечения числа из ответа сервера
+function parseCount(data) {
+  if (!data) return 0;
+  // Сервер CounterAPI в зависимости от версии возвращает count, up_count или value
+  const num = data.count ?? data.up_count ?? data.value;
+  return typeof num === 'number' && !isNaN(num) ? num : 0;
+}
+
+// Загрузка количества лайков с сервера
 async function updateLikesDisplay(reviewKey) {
   const btn = document.getElementById('like-btn-' + reviewKey);
-  const hasLiked = localStorage.getItem('has_liked_' + reviewKey);
+  const hasLiked = localStorage.getItem('has_liked_' + reviewKey) === 'true';
 
   try {
-    // Запрашиваем текущее число с глобального сервера
     const response = await fetch(`https://api.counterapi.dev/v1/${LIKES_NAMESPACE}/${reviewKey}/`);
-    const data = await response.json();
-    const count = data.count || 0;
+    let count = 0;
+    
+    if (response.ok) {
+      const data = await response.json();
+      count = parseCount(data);
+    }
 
     if (btn) {
       btn.innerHTML = `${hasLiked ? '❤️ Понравилось!' : '🤍 Мне нравится'} (${count})`;
-      if (hasLiked) btn.style.background = '#ffd9d9';
+      btn.style.background = hasLiked ? '#ffd9d9' : 'var(--card-yellow)';
     }
   } catch (error) {
-    console.log("Сервер лайков недоступен, показываем локально:", error);
+    console.log("Показываем резервное значение:", error);
+    if (btn) {
+      btn.innerHTML = `${hasLiked ? '❤️ Понравилось!' : '🤍 Мне нравится'} (0)`;
+    }
   }
 }
 
-// Функция нажатия на лайк
+// Нажатие на кнопку лайка
 async function likeReview(reviewKey) {
   const btn = document.getElementById('like-btn-' + reviewKey);
-  const hasLiked = localStorage.getItem('has_liked_' + reviewKey);
+  const hasLiked = localStorage.getItem('has_liked_' + reviewKey) === 'true';
 
-  // Защита от накрутки: один пользователь может лайкнуть только один раз
   if (hasLiked) {
     alert("Вы уже поставили лайк этому обзору! 🐾");
     return;
   }
 
-  // Анимация нажатия
+  // Звуковой эффект
+  if (typeof playRetroLikeSound === 'function') {
+    playRetroLikeSound();
+  }
+
+  // Анимация кнопки
   if (btn) {
     btn.style.transform = 'scale(1.2)';
     setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
   }
 
   try {
-    // Отправляем команду «up» (+1 к глобальному счетчику)
+    // Отправляем +1 к счётчику
     const response = await fetch(`https://api.counterapi.dev/v1/${LIKES_NAMESPACE}/${reviewKey}/up`);
-    const data = await response.json();
-    const newCount = data.count;
+    let newCount = 1;
 
-    // Запоминаем в браузере читателя, что он уже проголосовал
+    if (response.ok) {
+      const data = await response.json();
+      newCount = parseCount(data) || 1;
+    }
+
     localStorage.setItem('has_liked_' + reviewKey, 'true');
 
     if (btn) {
@@ -121,7 +140,12 @@ async function likeReview(reviewKey) {
       btn.style.background = '#ffd9d9';
     }
   } catch (error) {
-    console.error("Ошибка при отправке лайка:", error);
+    console.error("Ошибка сети при отправке лайка:", error);
+    localStorage.setItem('has_liked_' + reviewKey, 'true');
+    if (btn) {
+      btn.innerHTML = `❤️ Понравилось! (1)`;
+      btn.style.background = '#ffd9d9';
+    }
   }
 }
 
