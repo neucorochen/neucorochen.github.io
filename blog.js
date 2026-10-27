@@ -5,7 +5,7 @@
 const diaryPosts = [
   {
     date: "27.10.2026",
-    mood: "☕ Творческий настрой",
+    mood: "💟",
     title: "Обновление блога и работа над сайтом",
     text: "Привет! Решила добавить на сайт гостевую книгу, уютный дневник и систему лайков. Наконец-то всё выглядит именно так, как я задумывала — атмосферно, лампово и с любимой музыкой!",
     image: "" // Если хотите прикрепить картинку к записи, напишите путь: "images/photo.png"
@@ -68,7 +68,7 @@ function showDiary() {
 // ==========================================
 function getLikesCount(reviewKey) {
   const saved = localStorage.getItem('review_likes_' + reviewKey);
-  return saved ? parseInt(saved, 10) : 5; // начальное стартовое число лайков
+  return saved ? parseInt(saved, 10) : 0; // начальное стартовое число лайков
 }
 
 function likeReview(reviewKey) {
