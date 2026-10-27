@@ -64,88 +64,88 @@ function showDiary() {
 }
 
 // ==========================================
-// 3. СИСТЕМА ЛАЙКОВ (БЕЗ ОШИБКИ UNDEFINED)
+// 3. СИСТЕМА ЛАЙКОВ (100% ЗАЩИТА ОТ UNDEFINED)
 // ==========================================
-const LIKES_NAMESPACE = "neucorochen_gamelog";
 
-// Функция безопасного извлечения числа из ответа сервера
-function parseCount(data) {
-  if (!data) return 0;
-  // Сервер CounterAPI в зависимости от версии возвращает count, up_count или value
-  const num = data.count ?? data.up_count ?? data.value;
-  return typeof num === 'number' && !isNaN(num) ? num : 0;
+// Получение локального числа лайков (если интернет-сервер спит)
+function getLocalLikes(reviewKey) {
+  const val = localStorage.getItem('review_likes_' + reviewKey);
+  const parsed = parseInt(val, 10);
+  return isNaN(parsed) ? 0 : parsed;
 }
 
-// Загрузка количества лайков с сервера
+// Загрузка отображения лайков
 async function updateLikesDisplay(reviewKey) {
   const btn = document.getElementById('like-btn-' + reviewKey);
+  if (!btn) return;
+
   const hasLiked = localStorage.getItem('has_liked_' + reviewKey) === 'true';
+  let count = getLocalLikes(reviewKey);
 
   try {
-    const response = await fetch(`https://api.counterapi.dev/v1/${LIKES_NAMESPACE}/${reviewKey}/`);
-    let count = 0;
-    
-    if (response.ok) {
-      const data = await response.json();
-      count = parseCount(data);
+    // Бесплатный публичный API подсчета
+    const res = await fetch(`https://api.counterapi.dev/v1/neucorochen_blog/${reviewKey}/`);
+    if (res.ok) {
+      const data = await res.json();
+      if (typeof data.count === 'number') count = data.count;
+      else if (typeof data.up_count === 'number') count = data.up_count;
+      else if (typeof data.value === 'number') count = data.value;
     }
-
-    if (btn) {
-      btn.innerHTML = `${hasLiked ? '❤️ Понравилось!' : '🤍 Мне нравится'} (${count})`;
-      btn.style.background = hasLiked ? '#ffd9d9' : 'var(--card-yellow)';
-    }
-  } catch (error) {
-    console.log("Показываем резервное значение:", error);
-    if (btn) {
-      btn.innerHTML = `${hasLiked ? '❤️ Понравилось!' : '🤍 Мне нравится'} (0)`;
-    }
+  } catch (e) {
+    console.log("Работаем в автономном режиме сохранения лайков");
   }
+
+  // Гарантируем, что count — всегда строго положительное целое число
+  count = Math.max(0, parseInt(count, 10) || 0);
+
+  btn.innerHTML = `${hasLiked ? '❤️ Понравилось!' : '🤍 Мне нравится'} (${count})`;
+  btn.style.background = hasLiked ? '#ffd9d9' : 'var(--card-yellow)';
 }
 
-// Нажатие на кнопку лайка
+// Клик по кнопке лайка
 async function likeReview(reviewKey) {
   const btn = document.getElementById('like-btn-' + reviewKey);
+  if (!btn) return;
+
   const hasLiked = localStorage.getItem('has_liked_' + reviewKey) === 'true';
 
   if (hasLiked) {
-    alert("Вы уже поставили лайк этому обзору! 🐾");
+    alert("Вы уже поставили сердечко этому обзору! 🐾");
     return;
   }
 
-  // Звуковой эффект
+  // Ретро-звук
   if (typeof playRetroLikeSound === 'function') {
     playRetroLikeSound();
   }
 
-  // Анимация кнопки
-  if (btn) {
-    btn.style.transform = 'scale(1.2)';
-    setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
-  }
+  // Анимация нажатия
+  btn.style.transform = 'scale(1.2)';
+  setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
 
+  // Сразу локально прибавляем 1, чтобы не ждать ответа сервера
+  let newCount = getLocalLikes(reviewKey) + 1;
+  localStorage.setItem('review_likes_' + reviewKey, newCount);
+  localStorage.setItem('has_liked_' + reviewKey, 'true');
+
+  // Моментально обновляем вид кнопки
+  btn.innerHTML = `❤️ Понравилось! (${newCount})`;
+  btn.style.background = '#ffd9d9';
+
+  // В фоне пробуем отправить на сервер
   try {
-    // Отправляем +1 к счётчику
-    const response = await fetch(`https://api.counterapi.dev/v1/${LIKES_NAMESPACE}/${reviewKey}/up`);
-    let newCount = 1;
-
-    if (response.ok) {
-      const data = await response.json();
-      newCount = parseCount(data) || 1;
+    const res = await fetch(`https://api.counterapi.dev/v1/neucorochen_blog/${reviewKey}/up`);
+    if (res.ok) {
+      const data = await res.json();
+      const serverNum = data.count ?? data.up_count ?? data.value;
+      if (typeof serverNum === 'number' && !isNaN(serverNum)) {
+        btn.innerHTML = `❤️ Понравилось! (${serverNum})`;
+        localStorage.setItem('review_likes_' + reviewKey, serverNum);
+      }
     }
-
-    localStorage.setItem('has_liked_' + reviewKey, 'true');
-
-    if (btn) {
-      btn.innerHTML = `❤️ Понравилось! (${newCount})`;
-      btn.style.background = '#ffd9d9';
-    }
-  } catch (error) {
-    console.error("Ошибка сети при отправке лайка:", error);
-    localStorage.setItem('has_liked_' + reviewKey, 'true');
-    if (btn) {
-      btn.innerHTML = `❤️ Понравилось! (1)`;
-      btn.style.background = '#ffd9d9';
-    }
+  } catch (err) {
+    // Если сервер упал, у пользователя останется наш надежный локальный +1
+    console.log("Лайк сохранен в локальной сессии");
   }
 }
 
