@@ -64,98 +64,12 @@ function showDiary() {
 }
 
 // ==========================================
-// 3. СИСТЕМА ЛАЙКОВ (100% ЗАЩИТА ОТ UNDEFINED)
-// ==========================================
-
-// Получение локального числа лайков (если интернет-сервер спит)
-function getLocalLikes(reviewKey) {
-  const val = localStorage.getItem('review_likes_' + reviewKey);
-  const parsed = parseInt(val, 10);
-  return isNaN(parsed) ? 0 : parsed;
-}
-
-// Загрузка отображения лайков
-async function updateLikesDisplay(reviewKey) {
-  const btn = document.getElementById('like-btn-' + reviewKey);
-  if (!btn) return;
-
-  const hasLiked = localStorage.getItem('has_liked_' + reviewKey) === 'true';
-  let count = getLocalLikes(reviewKey);
-
-  try {
-    // Бесплатный публичный API подсчета
-    const res = await fetch(`https://api.counterapi.dev/v1/neucorochen_blog/${reviewKey}/`);
-    if (res.ok) {
-      const data = await res.json();
-      if (typeof data.count === 'number') count = data.count;
-      else if (typeof data.up_count === 'number') count = data.up_count;
-      else if (typeof data.value === 'number') count = data.value;
-    }
-  } catch (e) {
-    console.log("Работаем в автономном режиме сохранения лайков");
-  }
-
-  // Гарантируем, что count — всегда строго положительное целое число
-  count = Math.max(0, parseInt(count, 10) || 0);
-
-  btn.innerHTML = `${hasLiked ? '❤️ Понравилось!' : '🤍 Мне нравится'} (${count})`;
-  btn.style.background = hasLiked ? '#ffd9d9' : 'var(--card-yellow)';
-}
-
-// Клик по кнопке лайка
-async function likeReview(reviewKey) {
-  const btn = document.getElementById('like-btn-' + reviewKey);
-  if (!btn) return;
-
-  const hasLiked = localStorage.getItem('has_liked_' + reviewKey) === 'true';
-
-  if (hasLiked) {
-    alert("Вы уже поставили сердечко этому обзору! 🐾");
-    return;
-  }
-
-  // Ретро-звук
-  if (typeof playRetroLikeSound === 'function') {
-    playRetroLikeSound();
-  }
-
-  // Анимация нажатия
-  btn.style.transform = 'scale(1.2)';
-  setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
-
-  // Сразу локально прибавляем 1, чтобы не ждать ответа сервера
-  let newCount = getLocalLikes(reviewKey) + 1;
-  localStorage.setItem('review_likes_' + reviewKey, newCount);
-  localStorage.setItem('has_liked_' + reviewKey, 'true');
-
-  // Моментально обновляем вид кнопки
-  btn.innerHTML = `❤️ Понравилось! (${newCount})`;
-  btn.style.background = '#ffd9d9';
-
-  // В фоне пробуем отправить на сервер
-  try {
-    const res = await fetch(`https://api.counterapi.dev/v1/neucorochen_blog/${reviewKey}/up`);
-    if (res.ok) {
-      const data = await res.json();
-      const serverNum = data.count ?? data.up_count ?? data.value;
-      if (typeof serverNum === 'number' && !isNaN(serverNum)) {
-        btn.innerHTML = `❤️ Понравилось! (${serverNum})`;
-        localStorage.setItem('review_likes_' + reviewKey, serverNum);
-      }
-    }
-  } catch (err) {
-    // Если сервер упал, у пользователя останется наш надежный локальный +1
-    console.log("Лайк сохранен в локальной сессии");
-  }
-}
-
-// ==========================================
-// 4. КОММЕНТАРИИ ПОД ОБЗОРОМ ЧЕРЕЗ GISCUS
+// 3. КОММЕНТАРИИ ПОД ОБЗОРОМ (GISCUS)
 // ==========================================
 function loadReviewComments(reviewKey) {
   const slot = document.getElementById('review-comments-slot');
   if (!slot) return;
-  slot.innerHTML = ''; // очищаем перед новой статьей
+  slot.innerHTML = ''; // Очищаем контейнер при открытии нового обзора
 
   const script = document.createElement('script');
   script.src = 'https://giscus.app/client.js';
@@ -164,7 +78,7 @@ function loadReviewComments(reviewKey) {
   script.setAttribute('data-category', 'General');
   script.setAttribute('data-category-id', 'DIC_kwDON...'); // Ваш data-category-id
   script.setAttribute('data-mapping', 'specific');
-  script.setAttribute('data-term', 'Обзор: ' + reviewKey); // ветка создается строго под этот обзор
+  script.setAttribute('data-term', 'Обзор: ' + reviewKey);
   script.setAttribute('data-strict', '0');
   script.setAttribute('data-reactions-enabled', '1');
   script.setAttribute('data-emit-metadata', '0');
