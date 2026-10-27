@@ -64,37 +64,64 @@ function showDiary() {
 }
 
 // ==========================================
-// 3. СИСТЕМА ЛАЙКОВ ПОД ОБЗОРАМИ
+// 3. СИСТЕМА ГЛОБАЛЬНЫХ ЛАЙКОВ (ДЛЯ ВСЕХ ПОЛЬЗОВАТЕЛЕЙ)
 // ==========================================
-function getLikesCount(reviewKey) {
-  const saved = localStorage.getItem('review_likes_' + reviewKey);
-  return saved ? parseInt(saved, 10) : 0; // начальное стартовое число лайков
+
+// Уникальное пространство имён вашего сайта
+const LIKES_NAMESPACE = "neucorochen_gamelog";
+
+// Функция загрузки глобального количества лайков с сервера
+async function updateLikesDisplay(reviewKey) {
+  const btn = document.getElementById('like-btn-' + reviewKey);
+  const hasLiked = localStorage.getItem('has_liked_' + reviewKey);
+
+  try {
+    // Запрашиваем текущее число с глобального сервера
+    const response = await fetch(`https://api.counterapi.dev/v1/${LIKES_NAMESPACE}/${reviewKey}/`);
+    const data = await response.json();
+    const count = data.count || 0;
+
+    if (btn) {
+      btn.innerHTML = `${hasLiked ? '❤️ Понравилось!' : '🤍 Мне нравится'} (${count})`;
+      if (hasLiked) btn.style.background = '#ffd9d9';
+    }
+  } catch (error) {
+    console.log("Сервер лайков недоступен, показываем локально:", error);
+  }
 }
 
-function likeReview(reviewKey) {
+// Функция нажатия на лайк
+async function likeReview(reviewKey) {
   const btn = document.getElementById('like-btn-' + reviewKey);
-  let count = getLikesCount(reviewKey);
-
   const hasLiked = localStorage.getItem('has_liked_' + reviewKey);
-  if (!hasLiked) {
-    count += 1;
-    localStorage.setItem('review_likes_' + reviewKey, count);
+
+  // Защита от накрутки: один пользователь может лайкнуть только один раз
+  if (hasLiked) {
+    alert("Вы уже поставили лайк этому обзору! 🐾");
+    return;
+  }
+
+  // Анимация нажатия
+  if (btn) {
+    btn.style.transform = 'scale(1.2)';
+    setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
+  }
+
+  try {
+    // Отправляем команду «up» (+1 к глобальному счетчику)
+    const response = await fetch(`https://api.counterapi.dev/v1/${LIKES_NAMESPACE}/${reviewKey}/up`);
+    const data = await response.json();
+    const newCount = data.count;
+
+    // Запоминаем в браузере читателя, что он уже проголосовал
     localStorage.setItem('has_liked_' + reviewKey, 'true');
+
     if (btn) {
-      btn.style.transform = 'scale(1.15)';
-      setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
-      btn.innerHTML = `❤️ Понравилось! (${count})`;
+      btn.innerHTML = `❤️ Понравилось! (${newCount})`;
       btn.style.background = '#ffd9d9';
     }
-  } else {
-    // Если уже нажат — отмена лайка
-    count = Math.max(0, count - 1);
-    localStorage.setItem('review_likes_' + reviewKey, count);
-    localStorage.removeItem('has_liked_' + reviewKey);
-    if (btn) {
-      btn.innerHTML = `🤍 Мне нравится (${count})`;
-      btn.style.background = 'var(--card-yellow)';
-    }
+  } catch (error) {
+    console.error("Ошибка при отправке лайка:", error);
   }
 }
 
