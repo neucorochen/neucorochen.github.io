@@ -135,7 +135,7 @@
 
   <audio id="audio-engine" preload="auto"></audio>
 
-  <!-- ПОДКЛЮЧАЕМ НАШ ОТДЕЛЬНЫЙ МОДУЛЬ ДНЕВНИКА И ЛАЙКОВ -->
+  <!-- ПОДКЛЮЧАЕМ НАШ ОТДЕЛЬНЫЙ МОДУЛЬ ДНЕВНИКА И КОММЕНТАРИЕВ -->
   <script src="blog.js"></script>
 
   <script>
@@ -378,10 +378,6 @@
         `;
       }
 
-      // Получаем текущие лайки для этой игры из blog.js
-      const currentLikes = typeof getLikesCount === 'function' ? getLikesCount(key) : 0;
-      const isLiked = localStorage.getItem('has_liked_' + key);
-
       articleView.innerHTML = `
         <div class="game-meta-bar">
           <span><strong>Разработчик:</strong> ${game.dev}</span>
@@ -464,13 +460,6 @@
         <div class="cute-final-verdict">
           <h3>Вердикт автора:</h3>
           <p>${game.verdict}</p>
-        </div>
-
-        <!-- КНОПКА ЛАЙКА С СЕРДЕЧКОМ -->
-        <div style="text-align: center; margin: 30px 0 20px;">
-          <button id="like-btn-${key}" class="cute-btn" style="font-size: 1.05rem; padding: 10px 24px; transition: transform 0.15s; background: var(--card-yellow);" onclick="likeReview('${key}')">
-  🤍 Мне нравится (0)
-</button>
         </div>
 
         <!-- БЛОК КОММЕНТАРИЕВ К ЭТОМУ ОБЗОРУ -->
