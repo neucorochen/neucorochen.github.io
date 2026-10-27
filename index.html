@@ -19,14 +19,15 @@
     
     <!-- Вкладки навигации -->
     <nav class="window-tabs">
-      <div style="display: flex; gap: 8px;">
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
         <button class="tab-btn" onclick="showCatalog()">🎮 Все обзоры</button>
-        <button class="tab-btn" onclick="showGuestbook()">📖 Гостевая книга</button>
+        <button class="tab-btn" onclick="showDiary()">📝 Дневник</button>
+        <button class="tab-btn" onclick="showGuestbook()">📖 Гостевая</button>
       </div>
       <button class="tab-btn" id="toggle-player-btn" onclick="togglePlayerVisibility()">🎵 Плеер</button>
     </nav>
 
-    <!-- ВСТРОЕННЫЙ МУЗЫКАЛЬНЫЙ РЕТРО-ПЛЕЕР (НЕ ПРЕРЫВАЕТСЯ ПРИ ПЕРЕХОДАХ) -->
+    <!-- ВСТРОЕННЫЙ МУЗЫКАЛЬНЫЙ РЕТРО-ПЛЕЕР -->
     <div class="retro-player-bar" id="music-player-bar">
       <div class="player-left">
         <span class="music-disc" id="music-disc">💿</span>
@@ -74,7 +75,7 @@
           <span>👾</span>
         </div>
         <div class="box-body" id="catalog-cards">
-          <!-- Карточки генерируются скриптом автоматически -->
+          <!-- Карточки генерируются автоматически -->
         </div>
       </section>
 
@@ -95,19 +96,28 @@
 
     <!-- 2. РЕЖИМ СТАТЬИ: ПОЛНЫЙ ОБЗОР -->
     <main class="article-view-wrap" id="article-view">
-      <!-- Статья открывается здесь без перезагрузки вкладки, сохраняя музыку -->
+      <!-- Статья открывается здесь -->
     </main>
 
-    <!-- 3. РЕЖИМ ГОСТЕВОЙ КНИГИ -->
+    <!-- 3. РЕЖИМ ДНЕВНИКА (ВЛОГИ) -->
+    <main class="diary-view-wrap" id="diary-view" style="display: none; padding: 26px 28px; background: var(--card-cream); border-bottom: var(--stroke);">
+      <div id="diary-list">
+        <!-- Посты подтягиваются из blog.js -->
+      </div>
+      <div style="text-align: center; margin-top: 15px;">
+        <button class="cute-btn" onclick="showCatalog()">← Вернуться ко всем обзорам</button>
+      </div>
+    </main>
+
+    <!-- 4. РЕЖИМ ГОСТЕВОЙ КНИГИ -->
     <main class="guestbook-view-wrap" id="guestbook-view" style="display: none; padding: 26px 28px; background: var(--card-cream); border-bottom: var(--stroke);">
       <div style="background: var(--card-white); border: var(--stroke); border-radius: 20px; padding: 22px; margin-bottom: 22px; box-shadow: var(--shadow-block);">
         <h2 style="font-family: 'DynaPuff', cursive; color: #3b4d24; margin-bottom: 8px; font-size: 1.4rem;">★ Гостевая книга ★</h2>
         <p style="font-family: 'Comfortaa', cursive; font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">
-          Оставьте пару тёплых слов! 🐾
+          Оставьте пару тёплых слов, отзыв на обзор или просто передайте привет! 🐾
         </p>
       </div>
 
-      <!-- Контейнер для виджета Giscus -->
       <div style="background: var(--card-white); border: var(--stroke); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-block);">
         <div id="giscus-slot"></div>
       </div>
@@ -123,8 +133,10 @@
 
   </div>
 
-  <!-- СКРЫТЫЙ ТЕГ ДЛЯ ЗВУКА -->
   <audio id="audio-engine" preload="auto"></audio>
+
+  <!-- ПОДКЛЮЧАЕМ НАШ ОТДЕЛЬНЫЙ МОДУЛЬ ДНЕВНИКА И ЛАЙКОВ -->
+  <script src="blog.js"></script>
 
   <script>
     // ==========================================
@@ -270,11 +282,12 @@
     }
 
     // ==========================================
-    // ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ БЕЗ ПЕРЕЗАГРУЗКИ
+    // ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ
     // ==========================================
     const catalogView = document.getElementById('catalog-view');
     const articleView = document.getElementById('article-view');
     const guestbookView = document.getElementById('guestbook-view');
+    const diaryView = document.getElementById('diary-view');
 
     const bannerTitle = document.getElementById('banner-title');
     const bannerSubtitle = document.getElementById('banner-subtitle');
@@ -284,6 +297,7 @@
     function showCatalog() {
       articleView.style.display = 'none';
       guestbookView.style.display = 'none';
+      if (diaryView) diaryView.style.display = 'none';
       catalogView.style.display = 'grid';
 
       bannerTitle.textContent = 'Game Diary!';
@@ -296,6 +310,7 @@
     function showGuestbook() {
       catalogView.style.display = 'none';
       articleView.style.display = 'none';
+      if (diaryView) diaryView.style.display = 'none';
       guestbookView.style.display = 'block';
 
       bannerTitle.innerHTML = 'Гостевая книга 🐾';
@@ -304,13 +319,12 @@
       addressUrl.textContent = 'my.gamelog.cafe/guestbook';
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Подгружаем Giscus один раз при первом клике
       const slot = document.getElementById('giscus-slot');
       if (slot && !slot.hasChildNodes()) {
         const script = document.createElement('script');
         script.src = 'https://giscus.app/client.js';
         script.setAttribute('data-repo', 'neucorochen/neucorochen.github.io');
-        script.setAttribute('data-repo-id', 'R_kgDOVW4p0g');  
+        script.setAttribute('data-repo-id', 'R_kgDOVW4p0g'); 
         script.setAttribute('data-category', 'General');
         script.setAttribute('data-category-id', 'DIC_kwDOVW4p0s4DJt5F'); 
         script.setAttribute('data-mapping', 'specific');
@@ -333,6 +347,7 @@
 
       catalogView.style.display = 'none';
       guestbookView.style.display = 'none';
+      if (diaryView) diaryView.style.display = 'none';
       articleView.style.display = 'block';
 
       bannerTitle.innerHTML = `<span class="review-status-pill">${game.genre}</span><br>${game.title}`;
@@ -362,6 +377,10 @@
           </div>
         `;
       }
+
+      // Получаем текущие лайки для этой игры из blog.js
+      const currentLikes = typeof getLikesCount === 'function' ? getLikesCount(key) : 5;
+      const isLiked = localStorage.getItem('has_liked_' + key);
 
       articleView.innerHTML = `
         <div class="game-meta-bar">
@@ -395,7 +414,7 @@
           </div>
         </div>
 
-        <!-- ДИАГРАММА ПАРАМЕТРОВ С ВАШИМИ ОЦЕНКАМИ -->
+        <!-- ДИАГРАММА ПАРАМЕТРОВ -->
         <section class="chart-section">
           <div class="chart-header">
             <h3>Параметры игры ★</h3>
@@ -447,10 +466,28 @@
           <p>${game.verdict}</p>
         </div>
 
+        <!-- КНОПКА ЛАЙКА С СЕРДЕЧКОМ -->
+        <div style="text-align: center; margin: 30px 0 20px;">
+          <button id="like-btn-${key}" class="cute-btn" style="font-size: 1.05rem; padding: 10px 24px; transition: transform 0.15s; background: ${isLiked ? '#ffd9d9' : 'var(--card-yellow)'};" onclick="likeReview('${key}')">
+            ${isLiked ? '❤️ Понравилось!' : '🤍 Мне нравится'} (${currentLikes})
+          </button>
+        </div>
+
+        <!-- БЛОК КОММЕНТАРИЕВ К ЭТОМУ ОБЗОРУ -->
+        <section style="margin-top: 35px; background: var(--card-white); border: var(--stroke); border-radius: 22px; padding: 22px; box-shadow: var(--shadow-block);">
+          <h3 style="font-family: 'Comfortaa', cursive; color: #3b4d24; margin-bottom: 14px; font-size: 1.2rem;">💬 Комментарии к обзору:</h3>
+          <div id="review-comments-slot"></div>
+        </section>
+
         <div style="text-align: center; margin-top: 25px;">
           <button class="cute-btn" onclick="showCatalog()">← Вернуться ко всем обзорам</button>
         </div>
       `;
+
+      // Загружаем комментарии из blog.js для этого конкретного обзора
+      if (typeof loadReviewComments === 'function') {
+        loadReviewComments(key);
+      }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
