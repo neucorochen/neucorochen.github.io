@@ -379,7 +379,7 @@
       }
 
       // Получаем текущие лайки для этой игры из blog.js
-      const currentLikes = typeof getLikesCount === 'function' ? getLikesCount(key) : 5;
+      const currentLikes = typeof getLikesCount === 'function' ? getLikesCount(key) : 0;
       const isLiked = localStorage.getItem('has_liked_' + key);
 
       articleView.innerHTML = `
